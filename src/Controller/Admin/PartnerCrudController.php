@@ -31,7 +31,6 @@ class PartnerCrudController extends AbstractCrudController
         return $crud->setEntityLabelInPlural('Partenaires')
             ->setEntityLabelInSingular('Partenaire')
             ->setPageTitle('index','Administration des partenaires')
-            ->setPaginatorPageSize(10)
             ;
     }
 

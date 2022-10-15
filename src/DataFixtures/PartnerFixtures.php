@@ -12,7 +12,7 @@ class PartnerFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $module = new Partner();
             $faker = Factory::create();
             $module->setName($faker->company);

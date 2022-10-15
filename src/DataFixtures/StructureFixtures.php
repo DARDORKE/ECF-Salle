@@ -12,10 +12,12 @@ class StructureFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
 
-        for ($i = 0; $i < 10; $i++) {
-            $module = new Structure();
+        for ($i = 0; $i < 100; $i++) {
+            $structure = new Structure();
             $faker = Factory::create();
-            $module->setAddress($faker->address);
+            $structure->setAddress($faker->address);
+
+            $manager->persist($structure);
         }
 
         $manager->flush();
