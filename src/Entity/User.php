@@ -32,10 +32,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $enabled = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Partner::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Partner::class, cascade: ['remove', 'persist'])]
     private Collection $partners;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Structure::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Structure::class, cascade: ['remove', 'persist'])]
     private Collection $structures;
 
     #[ORM\ManyToMany(targetEntity: Module::class, mappedBy: 'user')]
@@ -215,5 +215,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->email;
     }
 }

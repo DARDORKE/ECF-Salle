@@ -18,6 +18,7 @@ class Partner
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+
     #[ORM\ManyToOne(inversedBy: 'partners')]
     private ?User $user = null;
 
@@ -86,5 +87,10 @@ class Partner
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }
