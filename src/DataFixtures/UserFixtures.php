@@ -11,15 +11,22 @@ class UserFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $roles = ['ROLE_USER', 'ROLE_PARTNER', 'ROLE_ADMIN'];
+        $roles = ['STRUCTURE'=>'ROLE_STRUCTURE', 'PARTNER' => 'ROLE_PARTNER', 'ADMIN' => 'ROLE_ADMIN'];
+        $enabled = ['1' => true, '2' => false];
+
 
         for ($i = 0; $i < 50; $i++) {
             $user = new User();
             $faker = Factory::create();
+            $randomRole = array_rand($roles);
+            $randomEnabled = array_rand($enabled);
+
+
             $user->setEmail($faker->email)
-                ->setEnabled(true)
+                ->setEnabled($enabled[$randomEnabled])
                 ->setPassword($faker->password)
-                ->setRoles([array_rand($roles), 1]);
+                ->setRoles([$roles[$randomRole]]);
+
 
             $manager->persist($user);
         }
