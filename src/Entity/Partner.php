@@ -22,7 +22,7 @@ class Partner
     #[ORM\ManyToOne(inversedBy: 'partners')]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'partner', targetEntity: Structure::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'partner', targetEntity: Structure::class)]
     private Collection $structures;
 
     public function __construct()

@@ -17,7 +17,6 @@ class Structure
     private ?string $address = null;
 
     #[ORM\ManyToOne(inversedBy: 'structures')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Partner $partner = null;
 
     #[ORM\ManyToOne(inversedBy: 'structures')]
