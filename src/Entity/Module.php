@@ -21,6 +21,7 @@ class Module
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'modules')]
     private Collection $user;
 
+
     public function __construct()
     {
         $this->user = new ArrayCollection();

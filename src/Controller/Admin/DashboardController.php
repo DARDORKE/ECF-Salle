@@ -24,31 +24,31 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('SwapAccess - Administration')
-            ->renderContentMaximized();
+            ->setTitle('SwapAccess - Administration');
     }
+
+
 
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
 
-        yield MenuItem::section('Partenaires');
-        yield MenuItem::subMenu('Actions')->setSubItems([
-            MenuItem::linkToCrud('Afficher', 'fas fa-eye', Partner::class),
-            MenuItem::linkToCrud('Créer', 'fas fa-plus', Partner::class)->setAction(Crud::PAGE_NEW)
-        ]);
+        yield MenuItem::section('Les Partenaires');
+        yield MenuItem::linkToCrud('Afficher', 'fas fa-eye', Partner::class)->setAction(Crud::PAGE_INDEX);
+        yield MenuItem::linkToCrud('Créer', 'fas fa-plus', Partner::class)->setAction(Crud::PAGE_NEW);
 
-        yield MenuItem::section('Structures');
-        yield MenuItem::subMenu('Actions')->setSubItems([
-            MenuItem::linkToCrud('Afficher', 'fas fa-eye', Structure::class),
-            MenuItem::linkToCrud('Créer', 'fas fa-plus', Structure::class)->setAction(Crud::PAGE_NEW)
-        ]);
-        yield MenuItem::section('Utilisateurs');
-        yield MenuItem::linkToCrud('Afficher', 'fas fa-eye', User::class);
+        yield MenuItem::section('Les Structures');
+
+        yield MenuItem::linkToCrud('Afficher', 'fas fa-eye', Structure::class)->setAction(Crud::PAGE_INDEX);
+        yield MenuItem::linkToCrud('Créer', 'fas fa-plus', Structure::class)->setAction(Crud::PAGE_NEW);
+
+
+        yield MenuItem::section('Comptes des utilisateurs');
+        yield MenuItem::linkToCrud('Afficher', 'fas fa-eye', User::class)->setAction(Crud::PAGE_INDEX);
         yield MenuItem::linkToCrud('Créer', 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW);
 
         yield MenuItem::section('Modules');
-        yield MenuItem::linkToCrud('Afficher', 'fas fa-eye', Module::class);
+        yield MenuItem::linkToCrud('Afficher', 'fas fa-eye', Module::class)->setAction(Crud::PAGE_INDEX);
         yield MenuItem::linkToCrud('Créer', 'fas fa-plus', Module::class)->setAction(Crud::PAGE_NEW);
     }
 }

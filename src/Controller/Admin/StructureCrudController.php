@@ -6,6 +6,8 @@ use App\Entity\Partner;
 use App\Entity\Structure;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -25,7 +27,14 @@ class StructureCrudController extends AbstractCrudController
         return $crud->setEntityLabelInPlural('Structures')
             ->setEntityLabelInSingular('Structure')
             ->setPageTitle('index', 'Administration des structures')
-            ->setPaginatorPageSize(10);
+            ->setPaginatorPageSize(10)
+            ;
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ;
     }
 
     public function configureFields(string $pageName): iterable

@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
@@ -26,7 +28,14 @@ class UserCrudController extends AbstractCrudController
         return $crud->setEntityLabelInPlural('Utilisateurs')
                 ->setEntityLabelInSingular('Utilisateur')
                 ->setPageTitle('index','Administration des utilisateurs')
-                ->setPaginatorPageSize(10);
+                ->setPaginatorPageSize(10)
+            ;
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ;
     }
 
     public function configureFields(string $pageName): iterable
