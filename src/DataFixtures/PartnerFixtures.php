@@ -14,7 +14,7 @@ class PartnerFixtures extends Fixture
 
         for ($i = 0; $i < 100; $i++) {
             $module = new Partner();
-            $faker = Factory::create();
+            $faker = Factory::create('fr_FR');
             $module->setName($faker->company);
             $manager->persist($module);
         }

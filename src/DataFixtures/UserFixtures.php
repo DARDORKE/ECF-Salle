@@ -17,7 +17,7 @@ class UserFixtures extends Fixture
 
         for ($i = 0; $i < 50; $i++) {
             $user = new User();
-            $faker = Factory::create();
+            $faker = Factory::create('fr_FR');
             $randomRole = array_rand($roles);
             $randomEnabled = array_rand($enabled);
 
