@@ -46,9 +46,15 @@ class UserCrudController extends AbstractCrudController
             TextField::new('password','Mot de passe')->setFormType(PasswordType::class),
             ArrayField::new('roles','Droits de l\'utilisateur'),
             BooleanField::new('enabled', 'Actif'),
-            AssociationField::new('partners', 'Partenaire associé à l\'utilisateur'),
-            AssociationField::new('structures', 'Structure associé à l\'utilisateur'),
-            AssociationField::new('modules', 'Modules accessibles par l\'utilisateur'),
+            AssociationField::new('partners', 'Partenaire associé à l\'utilisateur')->setFormTypeOptions([
+                'by_reference' => false,
+            ]),
+            AssociationField::new('structures', 'Structure associé à l\'utilisateur')->setFormTypeOptions([
+                'by_reference' => false,
+            ]),
+            AssociationField::new('modules', 'Modules accessibles par l\'utilisateur')->setFormTypeOptions([
+                'by_reference' => false,
+            ]),
         ];
     }
 
