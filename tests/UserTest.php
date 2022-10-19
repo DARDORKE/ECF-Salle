@@ -46,8 +46,8 @@ class UserTest extends TestCase
         $this->assertEmpty($user->getEmail());
         $this->assertEmpty($user->getPassword());
         $this->assertEmpty($user->isEnabled());
-        $this->assertEmpty($user->getStructures());
+        $this->assertEmpty($user->getStructure());
         $this->assertEmpty($user->getModules());
-        $this->assertEmpty($user->getPartners());
+        $this->assertEmpty($user->getPartner());
     }
 }

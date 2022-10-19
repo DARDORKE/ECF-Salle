@@ -6,8 +6,11 @@ use App\Repository\PartnerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PartnerRepository::class)]
+#[UniqueEntity('name')]
 class Partner
 {
     #[ORM\Id]
@@ -16,6 +19,11 @@ class Partner
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 10,
+        minMessage: 'Le nom du partenaire doit contenir au minimum 10 caractères.',
+    )]
     private ?string $name = null;
 
 

@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    const ROLES = ['ROLE_ADMIN', 'ROLE_PARTNER', 'ROLE_STRUCTURE'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -23,18 +25,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email]
+    #[Assert\NotBlank]
     private ?string $email = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Choice(self::ROLES)]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
-    #[ORM\Column( type: 'string', nullable: true )]
+    #[ORM\Column( type: 'string', nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\NotCompromisedPassword]
+    #[Assert\Length(
+        min: 8,
+        max: 16,
+        minMessage: 'Le mot de passe doit contenir entre 8 et 16 caractères',
+        maxMessage: 'Le mot de passe doit contenir entre 8 et 16 caractères'
+    )]
     private ?string $password = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
     private ?bool $enabled = null;
 
     #[ORM\ManyToMany(targetEntity: Module::class, mappedBy: 'user')]

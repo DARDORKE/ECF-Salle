@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\StructureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: StructureRepository::class)]
 class Structure
@@ -14,6 +15,7 @@ class Structure
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $address = null;
 
     #[ORM\ManyToOne(inversedBy: 'structures')]
@@ -21,6 +23,18 @@ class Structure
 
     #[ORM\OneToOne(mappedBy: 'structure', cascade: ['persist', 'remove'])]
     private ?User $user = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    private ?string $city = null;
+
+    #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5, max: 5,
+        minMessage: 'Le code postal doit contenir 5 chiffres', maxMessage: 'Le code postal doit contenir 5 chiffres',
+    )]
+    private ?int $zipCode = null;
 
     public function getId(): ?int
     {
@@ -74,6 +88,30 @@ class Structure
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getZipCode(): ?int
+    {
+        return $this->zipCode;
+    }
+
+    public function setZipCode(int $zipCode): self
+    {
+        $this->zipCode = $zipCode;
 
         return $this;
     }

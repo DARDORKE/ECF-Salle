@@ -12,6 +12,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class StructureCrudController extends AbstractCrudController
@@ -48,7 +50,9 @@ class StructureCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            TextField::new('address', 'Adresse postale de la structure'),
+            TextField::new('address', 'Adresse'),
+            TextField::new('city', 'Ville'),
+            NumberField::new('zipcode', 'Code postal'),
             AssociationField::new('partner', 'Partenaire de la structure')->setFormTypeOptions([
                 'by_reference' => false,
             ]),
