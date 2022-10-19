@@ -26,7 +26,9 @@ class StructureCrudController extends AbstractCrudController
 
         return $crud->setEntityLabelInPlural('Structures')
             ->setEntityLabelInSingular('Structure')
-            ->setPageTitle('index', 'Administration des structures')
+            ->setPageTitle('index','LISTE DES STRUCTURES')
+            ->setPageTitle('edit', 'MODIFICATION D\'UNE STRUCTURE')
+            ->setPageTitle('new', 'CREATION D\'UNE STRUCTURE')
             ->setPaginatorPageSize(10)
             ;
     }

@@ -3,15 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Form\RoleType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
-use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
-use Symfony\Component\Form\FormBuilderInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -22,18 +18,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserCrudController extends AbstractCrudController
 {
-    private UserPasswordHasherInterface $passwordEncoder;
-
-    public function __construct( UserPasswordHasherInterface $passwordEncoder ) {
-        $this->passwordEncoder = $passwordEncoder;
-    }
-
     public static function getEntityFqcn(): string
     {
         return User::class;
@@ -44,7 +31,9 @@ class UserCrudController extends AbstractCrudController
 
         return $crud->setEntityLabelInPlural('Utilisateurs')
                 ->setEntityLabelInSingular('Utilisateur')
-                ->setPageTitle('index','Administration des utilisateurs')
+                ->setPageTitle('index','LISTE DES UTILISATEURS')
+                ->setPageTitle('edit', 'MODIFICATION D\'UN UTILISATEUR')
+                ->setPageTitle('new', 'CREATION D\'UN UTILISATEUR')
                 ->setPaginatorPageSize(10)
             ;
     }
@@ -63,8 +52,6 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $roles = [ 'ROLE_ADMIN', 'ROLE_PARTNER', 'ROLE_STRUCTURE' ];
-
         return [
             FormField::addPanel( 'Informations de l\'utilisateur' )->setIcon( 'fa fa-user' ),
             IdField::new('id')->setDisabled()->hideOnForm()->hideOnDetail()->hideOnIndex(),
@@ -91,10 +78,15 @@ class UserCrudController extends AbstractCrudController
                     'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 ]),
             FormField::addPanel( 'Ajout des droits' )->setIcon('fa-light fa-scale-balanced'),
-            ChoiceField::new( 'roles')
-                        ->setChoices(array_combine($roles, $roles))
-                        ->allowMultipleChoices()
-                        ->renderAsBadges(),
+            ChoiceField::new( 'roles', 'Role')
+                        ->setChoices([
+                            'ADMINISTRATEUR' => 'ROLE_ADMIN',
+                            'PARTENAIRE' => 'ROLE_PARTNER',
+                            'STRUCTURE' => 'ROLE_STRUCTURE'
+                        ])
+                        ->allowMultipleChoices(false)
+                        ->renderExpanded()
+                        ->setFormType(RoleType::class),
             BooleanField::new('enabled', 'Actif'),
             AssociationField::new('partner', 'Partenaire associé à l\'utilisateur')->setFormTypeOptions([
                 'by_reference' => false,
@@ -106,31 +98,5 @@ class UserCrudController extends AbstractCrudController
                 'by_reference' => false,
             ]),
         ];
-    }
-
-    public function createEditFormBuilder( EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context ): FormBuilderInterface {
-        $plainPassword = $entityDto->getInstance()?->getPassword();
-        $formBuilder   = parent::createEditFormBuilder( $entityDto, $formOptions, $context );
-        $this->addEncodePasswordEventListener( $formBuilder, $plainPassword );
-
-        return $formBuilder;
-    }
-
-    public function createNewFormBuilder( EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context ): FormBuilderInterface {
-        $formBuilder = parent::createNewFormBuilder( $entityDto, $formOptions, $context );
-        $this->addEncodePasswordEventListener( $formBuilder );
-
-        return $formBuilder;
-    }
-
-    protected function addEncodePasswordEventListener( FormBuilderInterface $formBuilder, $plainPassword = null ): void
-    {
-        $formBuilder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) use ($plainPassword) {
-            /** @var User $user */
-            $user = $event->getData();
-            if ($user->getPassword() !== $plainPassword) {
-                $user->setPassword($this->passwordEncoder->hashPassword($user, $user->getPassword()));
-            }
-        });
     }
 }

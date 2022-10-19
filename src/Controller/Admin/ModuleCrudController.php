@@ -23,7 +23,9 @@ class ModuleCrudController extends AbstractCrudController
 
         return $crud->setEntityLabelInPlural('Modules')
             ->setEntityLabelInSingular('Module')
-            ->setPageTitle('index','Administration des modules')
+            ->setPageTitle('index','LISTE DES MODULES')
+            ->setPageTitle('edit', 'MODIFICATION D\'UN MODULE')
+            ->setPageTitle('new', 'CREATION D\'UN MODULE')
             ->setPaginatorPageSize(10)
             ;
     }
