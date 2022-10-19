@@ -85,8 +85,9 @@ class UserCrudController extends AbstractCrudController
                             'STRUCTURE' => 'ROLE_STRUCTURE'
                         ])
                         ->allowMultipleChoices(false)
-                        ->renderExpanded()
-                        ->setFormType(RoleType::class),
+                        ->renderAsNativeWidget()
+                        ->setFormType(RoleType::class)
+                        ,
             BooleanField::new('enabled', 'Actif'),
             AssociationField::new('partner', 'Partenaire associé à l\'utilisateur')->setFormTypeOptions([
                 'by_reference' => false,

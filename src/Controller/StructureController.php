@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StructureController extends AbstractController implements DisplayUserInterface
 {
-    #[Route('/structure', name: 'app_structure', methods: ['GET'])]
+    #[Route('/structure', name: 'structure', methods: ['GET'])]
     public function displayUserInformations (): Response
     {
         $this->denyAccessUnlessGranted('ROLE_STRUCTURE');
@@ -21,7 +21,7 @@ class StructureController extends AbstractController implements DisplayUserInter
 
         $userModules = $user->getModules();
         $userEmail = $user->getEmail();
-        $userPartner = $user->getPartners();
+        $userPartner = $user->getPartner();
 
         $response = new JsonResponse();
         $response->setData([

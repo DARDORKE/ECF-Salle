@@ -52,7 +52,13 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($this->urlGenerator->generate('admin'));
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('home'));
+        if (in_array("ROLE_PARTNER", $user->getRoles())) {
+            return new RedirectResponse($this->urlGenerator->generate('partner'));
+        }
+
+        if (in_array("ROLE_PARTNER", $user->getRoles())) {
+            return new RedirectResponse($this->urlGenerator->generate('structure'));
+        }
     }
 
     protected function getLoginUrl(Request $request): string

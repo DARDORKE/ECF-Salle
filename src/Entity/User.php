@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    const ROLES = ['ROLE_ADMIN', 'ROLE_PARTNER', 'ROLE_STRUCTURE'];
+    const ROLES = [['ROLE_ADMIN'], ['ROLE_PARTNER'], ['ROLE_STRUCTURE']];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -48,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank]
+    #[Assert\NotNull]
     private ?bool $enabled = null;
 
     #[ORM\ManyToMany(targetEntity: Module::class, mappedBy: 'user')]
