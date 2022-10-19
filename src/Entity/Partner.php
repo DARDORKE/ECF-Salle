@@ -19,11 +19,11 @@ class Partner
     private ?string $name = null;
 
 
-    #[ORM\ManyToOne(inversedBy: 'partners')]
-    private ?User $user = null;
-
     #[ORM\OneToMany(mappedBy: 'partner', targetEntity: Structure::class)]
     private Collection $structures;
+
+    #[ORM\OneToOne(mappedBy: 'partner', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -43,18 +43,6 @@ class Partner
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }
@@ -92,5 +80,27 @@ class Partner
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setPartner(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getPartner() !== $this) {
+            $user->setPartner($this);
+        }
+
+        $this->user = $user;
+
+        return $this;
     }
 }

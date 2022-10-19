@@ -19,9 +19,8 @@ class Structure
     #[ORM\ManyToOne(inversedBy: 'structures')]
     private ?Partner $partner = null;
 
-    #[ORM\ManyToOne(inversedBy: 'structures')]
+    #[ORM\OneToOne(mappedBy: 'structure', cascade: ['persist', 'remove'])]
     private ?User $user = null;
-
 
     public function getId(): ?int
     {
@@ -52,6 +51,11 @@ class Structure
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->address;
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -59,13 +63,18 @@ class Structure
 
     public function setUser(?User $user): self
     {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setStructure(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getStructure() !== $this) {
+            $user->setStructure($this);
+        }
+
         $this->user = $user;
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->address;
     }
 }

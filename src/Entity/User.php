@@ -27,25 +27,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
+    #[ORM\Column( type: 'string', nullable: true )]
     private ?string $password = null;
 
     #[ORM\Column]
     private ?bool $enabled = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Partner::class, cascade: ['remove', 'persist'])]
-    private Collection $partners;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Structure::class, cascade: ['remove', 'persist'])]
-    private Collection $structures;
-
     #[ORM\ManyToMany(targetEntity: Module::class, mappedBy: 'user')]
     private Collection $modules;
 
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Partner $partner = null;
+
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Structure $structure = null;
+
     public function __construct()
     {
-        $this->partners = new ArrayCollection();
-        $this->structures = new ArrayCollection();
         $this->modules = new ArrayCollection();
     }
 
@@ -131,66 +129,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Partner>
-     */
-    public function getPartners(): Collection
-    {
-        return $this->partners;
-    }
-
-    public function addPartner(Partner $partner): self
-    {
-        if (!$this->partners->contains($partner)) {
-            $this->partners->add($partner);
-            $partner->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removePartner(Partner $partner): self
-    {
-        if ($this->partners->removeElement($partner)) {
-            // set the owning side to null (unless already changed)
-            if ($partner->getUser() === $this) {
-                $partner->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Structure>
-     */
-    public function getStructures(): Collection
-    {
-        return $this->structures;
-    }
-
-    public function addStructure(Structure $structure): self
-    {
-        if (!$this->structures->contains($structure)) {
-            $this->structures->add($structure);
-            $structure->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStructure(Structure $structure): self
-    {
-        if ($this->structures->removeElement($structure)) {
-            // set the owning side to null (unless already changed)
-            if ($structure->getUser() === $this) {
-                $structure->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Module>
      */
     public function getModules(): Collection
@@ -220,5 +158,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->email;
+    }
+
+    public function getPartner(): ?Partner
+    {
+        return $this->partner;
+    }
+
+    public function setPartner(?Partner $partner): self
+    {
+        $this->partner = $partner;
+
+        return $this;
+    }
+
+    public function getStructure(): ?Structure
+    {
+        return $this->structure;
+    }
+
+    public function setStructure(?Structure $structure): self
+    {
+        $this->structure = $structure;
+
+        return $this;
     }
 }
