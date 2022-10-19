@@ -34,7 +34,12 @@ class StructureCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            ;
+            ->update(Crud::PAGE_INDEX, Action::NEW,
+                fn(Action $action) => $action->setLabel('Ajouter une structure'))
+            ->update(Crud::PAGE_INDEX, Action::BATCH_DELETE,
+                fn(Action$action) => $action->setLabel('Supprimer'))
+            ->update(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER,
+                fn(Action $action) => $action->setLabel('Créer et ajouter une nouvelle structure'));
     }
 
     public function configureFields(string $pageName): iterable
