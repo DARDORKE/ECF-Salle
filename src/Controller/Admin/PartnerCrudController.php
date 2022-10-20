@@ -22,6 +22,7 @@ class PartnerCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->update(Crud::PAGE_INDEX, Action::NEW,
                 fn(Action $action) => $action->setLabel('Ajouter un partenaire'))
             ->update(Crud::PAGE_INDEX, Action::BATCH_DELETE,

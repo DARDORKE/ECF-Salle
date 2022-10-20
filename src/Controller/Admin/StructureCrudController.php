@@ -26,7 +26,8 @@ class StructureCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
 
-        return $crud->setEntityLabelInPlural('Structures')
+        return $crud
+            ->setEntityLabelInPlural('Structures')
             ->setEntityLabelInSingular('Structure')
             ->setPageTitle('index','LISTE DES STRUCTURES')
             ->setPageTitle('edit', 'MODIFICATION D\'UNE STRUCTURE')
@@ -38,6 +39,7 @@ class StructureCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->update(Crud::PAGE_INDEX, Action::NEW,
                 fn(Action $action) => $action->setLabel('Ajouter une structure'))
             ->update(Crud::PAGE_INDEX, Action::BATCH_DELETE,

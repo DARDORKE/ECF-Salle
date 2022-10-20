@@ -35,6 +35,7 @@ class ModuleCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->update(Crud::PAGE_INDEX, Action::NEW,
             fn(Action $action) => $action
                 ->setLabel('Ajouter un module'))
@@ -50,7 +51,7 @@ class ModuleCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->hideOnForm(),
+            IdField::new('id')->hideOnForm()->hideOnDetail()->hideOnIndex(),
             TextField::new('name', 'Nom du module'),
             AssociationField::new('user', 'Utilisateurs autorisés'),
         ];
