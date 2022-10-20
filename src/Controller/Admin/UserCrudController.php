@@ -53,13 +53,13 @@ class UserCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            FormField::addPanel( 'Informations de l\'utilisateur' )->setIcon( 'fa fa-user' ),
+            FormField::addPanel('Informations de l\'utilisateur')->setIcon( 'fa fa-user'),
             IdField::new('id')->setDisabled()->hideOnForm()->hideOnDetail()->hideOnIndex(),
             EmailField::new('email', 'Adresse e-mail')->onlyWhenUpdating()->setDisabled(),
-            EmailField::new( 'email' )->onlyWhenCreating(),
-            TextField::new( 'email' )->onlyOnIndex(),
-            FormField::addPanel( 'Création du mot de passe' )->setIcon( 'fa fa-key' ),
-            Field::new( 'password', 'Mot de passe' )->onlyWhenCreating()->setRequired( true )
+            EmailField::new('email')->onlyWhenCreating(),
+            TextField::new('email')->onlyOnIndex(),
+            FormField::addPanel( 'Création du mot de passe')->setIcon('fa fa-key')->onlyWhenCreating(),
+            Field::new('password','Mot de passe')->onlyWhenCreating()->setRequired(true)
                 ->setFormType( RepeatedType::class )
                 ->setFormTypeOptions( [
                     'type'            => PasswordType::class,
@@ -68,16 +68,7 @@ class UserCrudController extends AbstractCrudController
                     'error_bubbling'  => true,
                     'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 ]),
-            Field::new( 'password', 'Nouveau mot de passe' )->onlyWhenUpdating()->setRequired( false )
-                ->setFormType( RepeatedType::class )
-                ->setFormTypeOptions( [
-                    'type'            => PasswordType::class,
-                    'first_options'   => [ 'label' => 'Nouveau mot de passe' ],
-                    'second_options'  => [ 'label' => 'Vérification du mot de passe' ],
-                    'error_bubbling'  => true,
-                    'invalid_message' => 'Les mots de passe ne correspondent pas.',
-                ]),
-            FormField::addPanel( 'Ajout des droits' )->setIcon('fa-light fa-scale-balanced'),
+            FormField::addPanel( 'Droits de l\'utilisateur' )->setIcon('fa-light fa-scale-balanced'),
             ChoiceField::new( 'roles', 'Role')
                         ->setChoices([
                             'ADMINISTRATEUR' => 'ROLE_ADMIN',

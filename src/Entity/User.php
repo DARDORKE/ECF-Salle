@@ -36,15 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column( type: 'string', nullable: true)]
-    #[Assert\NotBlank]
-    #[Assert\NotCompromisedPassword]
-    #[Assert\Length(
-        min: 8,
-        max: 16,
-        minMessage: 'Le mot de passe doit contenir entre 8 et 16 caractères',
-        maxMessage: 'Le mot de passe doit contenir entre 8 et 16 caractères'
-    )]
+    #[ORM\Column(type: 'string')]
     private ?string $password = null;
 
     #[ORM\Column]
@@ -54,10 +46,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Module::class, mappedBy: 'user')]
     private Collection $modules;
 
-    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist'])]
     private ?Partner $partner = null;
 
-    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist'])]
     private ?Structure $structure = null;
 
     public function __construct()

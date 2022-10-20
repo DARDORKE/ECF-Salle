@@ -30,7 +30,7 @@ class Partner
     #[ORM\OneToMany(mappedBy: 'partner', targetEntity: Structure::class)]
     private Collection $structures;
 
-    #[ORM\OneToOne(mappedBy: 'partner', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'partner', cascade: ['persist'])]
     private ?User $user = null;
 
     public function __construct()

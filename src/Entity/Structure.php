@@ -21,7 +21,7 @@ class Structure
     #[ORM\ManyToOne(inversedBy: 'structures')]
     private ?Partner $partner = null;
 
-    #[ORM\OneToOne(mappedBy: 'structure', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'structure', cascade: ['persist'])]
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
