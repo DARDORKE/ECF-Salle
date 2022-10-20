@@ -15,7 +15,9 @@ class StructureFixtures extends Fixture
         for ($i = 0; $i < 100; $i++) {
             $structure = new Structure();
             $faker = Factory::create('fr_FR');
-            $structure->setAddress($faker->address);
+            $structure->setAddress($faker->address)
+            ->setZipCode(50000)
+            ->setCity($faker->city);
 
             $manager->persist($structure);
         }
