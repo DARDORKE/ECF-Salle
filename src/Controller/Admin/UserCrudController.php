@@ -81,6 +81,8 @@ class UserCrudController extends AbstractCrudController
                         ->setFormType(RoleType::class)
                         ,
             BooleanField::new('enabled', 'Actif'),
+
+            FormField::addPanel( 'Accès de l\'utilisateur' )->setIcon('fa-light fa-scale-balanced'),
             AssociationField::new('partner', 'Partenaire associé à l\'utilisateur')->setFormTypeOptions([
                 'by_reference' => false,
             ]),
