@@ -24,12 +24,12 @@ class Structure
     #[ORM\Column]
     private ?int $zipCode = null;
 
-    #[ORM\OneToOne(mappedBy: 'structure', cascade: ['persist'])]
-    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    #[ORM\OneToOne(mappedBy: 'structure', targetEntity: User::class , cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'structures')]
-    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    #[ORM\ManyToOne(targetEntity: Partner::class, inversedBy: 'structures')]
+    #[ORM\JoinColumn(name: 'partner_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?Partner $partner = null;
 
     public function getId(): ?int

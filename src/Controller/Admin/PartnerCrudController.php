@@ -49,7 +49,8 @@ class PartnerCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             TextField::new('name', 'Nom de partenaire'),
             AssociationField::new('user','Utilisateur associé au partenaire'),
-            AssociationField::new('structures', 'Structures du partenaire')->setFormTypeOptions([
+            AssociationField::new('structures', 'Structures du partenaire')
+                ->setFormTypeOptions([
                 'by_reference' => false,
             ]),
         ];

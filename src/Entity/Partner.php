@@ -21,12 +21,14 @@ class Partner
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToOne(mappedBy: 'partner', cascade: ['persist'])]
-    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    #[ORM\OneToOne(mappedBy: 'partner', targetEntity: User::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?User $user = null;
 
+    /**
+     * @var Collection<int, Structure>
+     */
     #[ORM\OneToMany(mappedBy: 'partner', targetEntity: Structure::class)]
-    #[ORM\JoinColumn(onDelete: "SET NULL")]
     private Collection $structures;
 
     public function __construct()
