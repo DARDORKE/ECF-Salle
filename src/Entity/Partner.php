@@ -21,8 +21,7 @@ class Partner
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToOne(mappedBy: 'partner', targetEntity: User::class, cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\OneToOne(mappedBy: "partner", targetEntity: User::class)]
     private ?User $user = null;
 
     /**
