@@ -15,26 +15,22 @@ class Structure
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
     private ?string $address = null;
 
-    #[ORM\ManyToOne(inversedBy: 'structures')]
-    private ?Partner $partner = null;
-
-    #[ORM\OneToOne(mappedBy: 'structure', cascade: ['persist'])]
-    private ?User $user = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
     private ?string $city = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(
-        min: 5, max: 5,
-        minMessage: 'Le code postal doit contenir 5 chiffres', maxMessage: 'Le code postal doit contenir 5 chiffres',
-    )]
     private ?int $zipCode = null;
+
+    #[ORM\OneToOne(mappedBy: 'structure', cascade: ['persist'])]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'structures')]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    private ?Partner $partner = null;
 
     public function getId(): ?int
     {
@@ -53,21 +49,35 @@ class Structure
         return $this;
     }
 
-    public function getPartner(): ?Partner
-    {
-        return $this->partner;
-    }
-
-    public function setPartner(?Partner $partner): self
-    {
-        $this->partner = $partner;
-
-        return $this;
-    }
 
     public function __toString()
     {
         return $this->address;
+    }
+
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getZipCode(): ?int
+    {
+        return $this->zipCode;
+    }
+
+    public function setZipCode(int $zipCode): self
+    {
+        $this->zipCode = $zipCode;
+
+        return $this;
     }
 
     public function getUser(): ?User
@@ -92,26 +102,14 @@ class Structure
         return $this;
     }
 
-    public function getCity(): ?string
+    public function getPartner(): ?Partner
     {
-        return $this->city;
+        return $this->partner;
     }
 
-    public function setCity(string $city): self
+    public function setPartner(?Partner $partner): self
     {
-        $this->city = $city;
-
-        return $this;
-    }
-
-    public function getZipCode(): ?int
-    {
-        return $this->zipCode;
-    }
-
-    public function setZipCode(int $zipCode): self
-    {
-        $this->zipCode = $zipCode;
+        $this->partner = $partner;
 
         return $this;
     }

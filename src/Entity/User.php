@@ -16,8 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    const ROLES = [['ROLE_ADMIN'], ['ROLE_PARTNER'], ['ROLE_STRUCTURE']];
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -25,12 +23,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email]
-    #[Assert\NotBlank]
     private ?string $email = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Choice(self::ROLES)]
     private array $roles = [];
 
     /**
@@ -40,22 +35,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column]
-    #[Assert\NotNull]
     private ?bool $enabled = null;
 
-    #[ORM\ManyToMany(targetEntity: Module::class, mappedBy: 'user')]
+    #[ORM\ManyToMany(targetEntity: Module::class, inversedBy: 'users')]
     private Collection $modules;
 
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist'])]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
     private ?Partner $partner = null;
 
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist'])]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
     private ?Structure $structure = null;
 
     public function __construct()
     {
         $this->modules = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -138,6 +135,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->email;
+    }
+
     /**
      * @return Collection<int, Module>
      */
@@ -150,7 +152,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->modules->contains($module)) {
             $this->modules->add($module);
-            $module->addUser($this);
         }
 
         return $this;
@@ -158,16 +159,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeModule(Module $module): self
     {
-        if ($this->modules->removeElement($module)) {
-            $module->removeUser($this);
-        }
+        $this->modules->removeElement($module);
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->email;
     }
 
     public function getPartner(): ?Partner

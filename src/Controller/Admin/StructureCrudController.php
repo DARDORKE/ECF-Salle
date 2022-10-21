@@ -55,12 +55,8 @@ class StructureCrudController extends AbstractCrudController
             TextField::new('address', 'Adresse'),
             TextField::new('city', 'Ville'),
             NumberField::new('zipcode', 'Code postal')->setRequired(true),
-            AssociationField::new('partner', 'Partenaire de la structure')->setFormTypeOptions([
-                'by_reference' => false,
-            ]),
-            AssociationField::new('user', 'Utilisateur de la structure')->setFormTypeOptions([
-                'by_reference' => false,
-            ]),
+            AssociationField::new('partner', 'Partenaire de la structure'),
+            AssociationField::new('user', 'Utilisateur de la structure'),
         ];
     }
 }

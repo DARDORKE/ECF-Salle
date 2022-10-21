@@ -19,16 +19,14 @@ class Module
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'modules')]
-    private Collection $user;
-
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'modules')]
+    private Collection $users;
 
     public function __construct()
     {
-        $this->user = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -48,18 +46,24 @@ class Module
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     /**
      * @return Collection<int, User>
      */
-    public function getUser(): Collection
+    public function getUsers(): Collection
     {
-        return $this->user;
+        return $this->users;
     }
 
     public function addUser(User $user): self
     {
-        if (!$this->user->contains($user)) {
-            $this->user->add($user);
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addModule($this);
         }
 
         return $this;
@@ -67,13 +71,10 @@ class Module
 
     public function removeUser(User $user): self
     {
-        $this->user->removeElement($user);
+        if ($this->users->removeElement($user)) {
+            $user->removeModule($this);
+        }
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->name;
     }
 }

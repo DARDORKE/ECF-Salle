@@ -53,7 +53,9 @@ class ModuleCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm()->hideOnDetail()->hideOnIndex(),
             TextField::new('name', 'Nom du module'),
-            AssociationField::new('user', 'Utilisateurs autorisés'),
+            AssociationField::new('users', 'Utilisateurs autorisés')->setFormTypeOptions([
+                'by_reference' => false,
+            ]),
         ];
     }
 }

@@ -19,19 +19,15 @@ class Partner
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
-    #[Assert\Length(
-        min: 10,
-        minMessage: 'Le nom du partenaire doit contenir au minimum 10 caractères.',
-    )]
     private ?string $name = null;
 
+    #[ORM\OneToOne(mappedBy: 'partner', cascade: ['persist'])]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'partner', targetEntity: Structure::class)]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
     private Collection $structures;
-
-    #[ORM\OneToOne(mappedBy: 'partner', cascade: ['persist'])]
-    private ?User $user = null;
 
     public function __construct()
     {
@@ -51,6 +47,33 @@ class Partner
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setPartner(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getPartner() !== $this) {
+            $user->setPartner($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }
@@ -81,33 +104,6 @@ class Partner
                 $structure->setPartner(null);
             }
         }
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->name;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($user === null && $this->user !== null) {
-            $this->user->setPartner(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($user !== null && $user->getPartner() !== $this) {
-            $user->setPartner($this);
-        }
-
-        $this->user = $user;
 
         return $this;
     }

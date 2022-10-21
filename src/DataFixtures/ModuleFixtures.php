@@ -14,7 +14,7 @@ class ModuleFixtures extends Fixture
         for ($i = 0; $i < 100; $i++) {
             $module = new Module();
             $faker = Factory::create('fr_FR');
-            $module->setName($faker->title);
+            $module->setName($faker->text(20));
 
             $manager->persist($module);
         }
