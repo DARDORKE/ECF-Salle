@@ -51,14 +51,14 @@ class StructureCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->hideOnForm(),
+            IdField::new('id')->hideOnForm()->hideOnIndex(),
             TextField::new('address', 'Adresse'),
             TextField::new('city', 'Ville'),
             NumberField::new('zipcode', 'Code postal')->setRequired(true),
             AssociationField::new('partner', 'Partenaire de la structure'),
             AssociationField::new('user', 'Utilisateur de la structure')
-                ->renderAsNativeWidget()
-                ->hideWhenUpdating(),
+                ->hideWhenUpdating()
+                ->hideOnIndex(),
         ];
     }
 }

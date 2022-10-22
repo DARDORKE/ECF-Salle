@@ -24,7 +24,7 @@ class Structure
     #[ORM\Column]
     private ?int $zipCode = null;
 
-    #[ORM\OneToOne(mappedBy: "structure", targetEntity: User::class)]
+    #[ORM\OneToOne(mappedBy: "structure", targetEntity: User::class, cascade : ["persist"])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Partner::class, inversedBy: 'structures')]

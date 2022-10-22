@@ -11,6 +11,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Form\Filter\Type\ArrayFilterType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class PartnerCrudController extends AbstractCrudController
 {
@@ -46,9 +48,11 @@ class PartnerCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->hideOnForm(),
+            IdField::new('id')->hideOnForm()->hideOnIndex(),
             TextField::new('name', 'Nom de partenaire'),
-            AssociationField::new('user','Utilisateur associé au partenaire')->hideWhenUpdating(),
+            AssociationField::new('user','Utilisateur associé au partenaire')
+                ->hideWhenUpdating()
+                ->hideOnIndex(),
             AssociationField::new('structures', 'Structures du partenaire')
                 ->setFormTypeOptions([
                 'by_reference' => false,

@@ -44,13 +44,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinTable(name: 'users_modules')]
     private Collection $modules;
 
-
     #[ORM\OneToOne(inversedBy: "user", targetEntity: Partner::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "partner", nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(name: "partner_id", referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?Partner $partner = null;
 
     #[ORM\OneToOne(inversedBy: "user", targetEntity: Structure::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "structure", nullable: true, onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(name: "structure_id", referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?Structure $structure = null;
 
     public function __construct()

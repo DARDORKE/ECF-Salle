@@ -21,7 +21,8 @@ class Partner
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToOne(mappedBy: "partner", targetEntity: User::class)]
+    //BUG TRI SUR LA LISTE DES USERS DANS PARTNER FONCTIONNE PAS
+    #[ORM\OneToOne(mappedBy: "partner", targetEntity: User::class, cascade : ["persist"])]
     private ?User $user = null;
 
     /**
