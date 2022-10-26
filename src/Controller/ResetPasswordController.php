@@ -121,7 +121,7 @@ class ResetPasswordController extends AbstractController
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('reset_password/reset.html.twig', [
@@ -159,7 +159,7 @@ class ResetPasswordController extends AbstractController
         $email = (new TemplatedEmail())
             ->from(new Address('swapaccess.contact@gmail.com', 'Swap Access'))
             ->to($user->getEmail())
-            ->subject('Your password reset request')
+            ->subject('Votre demande de réinitialisation de mot de passe.')
             ->htmlTemplate('reset_password/email.html.twig')
             ->context([
                 'resetToken' => $resetToken,

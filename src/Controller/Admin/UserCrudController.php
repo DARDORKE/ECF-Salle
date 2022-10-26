@@ -79,6 +79,7 @@ class UserCrudController extends AbstractCrudController
                         ->allowMultipleChoices(false)
                         ->renderAsNativeWidget()
                         ->setFormType(RoleType::class)
+                        ->setRequired(true)
                         ,
             BooleanField::new('enabled', 'Actif'),
 

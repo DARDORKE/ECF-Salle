@@ -19,6 +19,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 
 
 class EasyAdminSubscriber implements EventSubscriberInterface
@@ -26,6 +27,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     private UserPasswordHasherInterface $passwordEncoder;
 
     private MailerInterface $mailer;
+
 
     public function __construct(UserPasswordHasherInterface $passwordEncoder, MailerInterface $mailer)
     {
@@ -53,7 +55,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
                 ->from('swapaccess.contact@gmail.com')
                 ->to($newUserEmail)
                 ->subject('Création de votre compte SwapAccess.')
-                ->htmlTemplate('newAccountEmail.html.Twig')
+                ->htmlTemplate('email/newAccountEmail.html.twig')
                 ->context([
                     'userEmail' => $newUserEmail
                 ]);

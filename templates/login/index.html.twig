@@ -1,16 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion à Swap Access{% endblock %}
 
 {% block body %}
-<form method="post">
+<form action="{{ path('app_login') }}" method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
     {% if app.user %}
         <div class="mb-3">
-            Bonjour, {{ app.user.userIdentifier }} !<a href="{{ path('app_logout') }}">Logout</a>
+            Bonjour, vous êtes déjà connecté en tant que {{ app.user.userIdentifier }} !
+            Si vous changez de compte vous serez automatiquement déconnecté de {{ app.user.userIdentifier }}.
+            <a href="{{ path('app_logout') }}">Se déconnecter</a>
         </div>
     {% endif %}
 
@@ -20,9 +22,8 @@
     <label for="inputPassword">Mot de passe</label>
     <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
     <p><a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a></p>
 
         <div class="checkbox mb-3">
@@ -32,8 +33,8 @@
         </div>
 
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Se connecter
-    </button>
+    <button class="btn btn-lg btn-primary" type="submit">Se connecter</button>
 </form>
 {% endblock %}
+
+
