@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\Module;
 use App\Entity\Partner;
 use App\Entity\Structure;
 use App\Entity\User;
@@ -36,138 +37,233 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     {
         return [
             BeforeEntityPersistedEvent::class => ['encodePassword'],
-            AfterEntityPersistedEvent::class => ['sendNewAccountEmail'],
+            AfterEntityPersistedEvent::class => ['onCreateEmail'],
+            AfterEntityUpdatedEvent::class => ['onUpdateEmail']
 
         ];
     }
 
-    public function sendNewAccountEmail(AfterEntityPersistedEvent $event)
+    public function onCreateEmail(AfterEntityPersistedEvent $event)
     {
-       $entity = $event->getEntityInstance();
+        $entity = $event->getEntityInstance();
 
-       // Mail de création d'un utilisateur
-      if ($entity instanceof User) {
-          $newUserEmail = $entity->getEmail();
-          $email = (new TemplatedEmail())
-              ->from('swapaccess.contact@gmail.com')
-              ->to($newUserEmail)
-              ->subject('Création de votre compte SwapAccess.')
-              ->htmlTemplate('newAccountEmail.html.Twig')
-              ->context([
-                  'userEmail' => $newUserEmail
-              ]);
-          $this->mailer->send($email);
-      }
+        // Mail de création d'un utilisateur
+        if ($entity instanceof User) {
+            $newUserEmail = $entity->getEmail();
+            $email = (new TemplatedEmail())
+                ->from('swapaccess.contact@gmail.com')
+                ->to($newUserEmail)
+                ->subject('Création de votre compte SwapAccess.')
+                ->htmlTemplate('newAccountEmail.html.Twig')
+                ->context([
+                    'userEmail' => $newUserEmail
+                ]);
+            $this->mailer->send($email);
+        }
 
-      // Mail d'association d'un partenaire à un compte (lors de la création d'un partenaire)
-      if ($entity instanceof Partner) {
-          if (is_null($entity->getUser())) {
-              return;
-          }
+        // Mail d'association d'un partenaire à un compte (lors de la création d'un partenaire)
+        if ($entity instanceof Partner) {
+            if (is_null($entity->getUser())) {
+                return;
+            }
 
-          $partnerEmail = $entity->getUser()->getEmail();
-          $partnerName = $entity->getName();
-          $partnerStructures = $entity->getStructures();
-          $partnerModules = $entity->getUser()->getModules();
-          $email = (new TemplatedEmail())
-              ->from('swapaccess.contact@gmail.com')
-              ->to($partnerEmail)
-              ->subject('Modification de votre compte SwapAccess.')
-              ->htmlTemplate('editAccountEmail.html.Twig')
-              ->context([
-                  'userEmail' => $partnerEmail,
-                  'partnerName' => $partnerName,
-                  'partnerStructures' => $partnerStructures,
-                  'partnerModules' => $partnerModules,
-              ]);
-          $this->mailer->send($email);
-      }
+            $userEmail = $entity->getUser()->getEmail();
+            $partnerName = $entity->getName();
+            $partnerStructures = $entity->getStructures()->toArray();
+            $userModules = $entity->getUser()->getModules()->toArray();
+            $email = (new TemplatedEmail())
+                ->from('swapaccess.contact@gmail.com')
+                ->to($userEmail)
+                ->subject('Modification de votre compte SwapAccess.')
+                ->htmlTemplate('editAccountEmail.html.Twig')
+                ->context([
+                    'userEmail' => $userEmail,
+                    'partnerName' => $partnerName,
+                    'partnerStructures' => $partnerStructures,
+                    'userModules' => $userModules,
+                ]);
+            $this->mailer->send($email);
+        }
 
-      // Mail d'association d'une structure à un compte + mail partenaire associé (lors de la création de la structure)
-      if ($entity instanceof Structure) {
-          if (is_null($entity->getUser()) && is_null($entity->getPartner())){
-              return;
-          }
+        // Mail d'association d'une structure à un compte + mail partenaire associé (lors de la création de la structure)
+        if ($entity instanceof Structure) {
+            if (is_null($entity->getUser()) && is_null($entity->getPartner())) {
+                return;
+            }
 
-          $structureAddress = $entity->getAddress();
-          $structureZipCode = $entity->getZipCode();
-          $structureCity = $entity->getCity();
+            $structureAddress = $entity->getAddress();
+            $structureZipCode = $entity->getZipCode();
+            $structureCity = $entity->getCity();
 
-          // Mail d'association de la structure à un compte
-          if (!(is_null($entity->getUser()))) {
-              $structureEmail = $entity->getUser()->getEmail();
-              $structureModules = $entity->getUser()->getModules();
-              $email = (new TemplatedEmail())
-                  ->from('swapaccess.contact@gmail.com')
-                  ->to($structureEmail)
-                  ->subject('Modification de votre compte SwapAccess.')
-                  ->htmlTemplate('editAccountEmail.html.Twig')
-                  ->context([
-                      'userEmail' => $structureEmail,
-                      'structureAddress' => $structureAddress,
-                      'structureZipCode' => $structureZipCode,
-                      'structureCity' => $structureCity,
-                      'structureModules' => $structureModules
-                  ]);
-              $this->mailer->send($email);
-          }
+            // Mail d'association de la structure à un compte
+            if (!(is_null($entity->getUser()))) {
+                $userEmail = $entity->getUser()->getEmail();
+                $userModules = $entity->getUser()->getModules();
+                $email = (new TemplatedEmail())
+                    ->from('swapaccess.contact@gmail.com')
+                    ->to($userEmail)
+                    ->subject('Modification de votre compte SwapAccess.')
+                    ->htmlTemplate('editAccountEmail.html.Twig')
+                    ->context([
+                        'userEmail' => $userEmail,
+                        'structureAddress' => $structureAddress,
+                        'structureZipCode' => $structureZipCode,
+                        'structureCity' => $structureCity,
+                        'userModules' => $userModules
+                    ]);
+                $this->mailer->send($email);
+            }
 
-          // Mail de confirmation au partenaire associé
-          if (!(is_null($entity->getPartner()))) {
-          $partnerEmail = $entity->getPartner()->getUser()->getEmail();
-          $email = (new TemplatedEmail())
-              ->from('swapaccess.contact@gmail.com')
-              ->to($partnerEmail)
-              ->subject('Création d\'une nouvelle structure.')
-              ->htmlTemplate('structureConfirmationEmail.html.Twig')
-              ->context([
-                  'userEmail' => $partnerEmail,
-                  'structureAddress' => $structureAddress,
-                  'structureZipCode' => $structureZipCode,
-                  'structureCity' => $structureCity,
-              ]);
-          $this->mailer->send($email);
-      }
+            // Mail de confirmation au partenaire associé
+            if ((!(is_null($entity->getPartner()))) && (!(is_null($entity->getPartner()->getUser())))) {
+                $partnerEmail = $entity->getPartner()->getUser()->getEmail();
+                $email = (new TemplatedEmail())
+                    ->from('swapaccess.contact@gmail.com')
+                    ->to($partnerEmail)
+                    ->subject('Création d\'une nouvelle structure.')
+                    ->htmlTemplate('structureConfirmationEmail.html.Twig')
+                    ->context([
+                        'userEmail' => $partnerEmail,
+                        'structureAddress' => $structureAddress,
+                        'structureZipCode' => $structureZipCode,
+                        'structureCity' => $structureCity,
+                    ]);
+                $this->mailer->send($email);
+            }
+        }
 
-      // Mail d'édition d'un partenaire
-//      if ($currentAction === 'edit' && $currentEntityFqcn === 'App\Entity\Partner') {
-//          if (is_null($event->getAdminContext()->getEntity()->getInstance()->getUser())) {
-//              return;
-//            }
-//
-//          $partnerStructures = $event->getAdminContext()->getEntity()->getInstance()->getStructures()->getValues();
-//          $structureAddresses = [];
-//          foreach ($partnerStructures as $structure){
-//              $structureAddress = $structure->getAddress();
-//              $structureAddresses[] = $structureAddress;
-//            }
-//
-//            $partnerName = $event->getAdminContext()->getEntity()->getInstance()->getName();
-//            $partnerEmail = $event->getAdminContext()->getEntity()->getInstance()->getUser()->getEmail();
-//            $newUserEmail = $event->getAdminContext()->getRequest()->get('User')['email'];
-//            $email = (new TemplatedEmail())
-//                ->from('swapaccess.contact@gmail.com')
-//                ->to($newUserEmail)
-//                ->subject('Modification de votre compte SwapAccess.')
-//                ->htmlTemplate('editPartnerEmail.html.Twig')
-//                ->context([
-//                    'partnerName' => $partnerName,
-//                    'partnerEmail' => $partnerEmail,
-//                    'structureAddresses' => $structureAddresses,
-//                ]);
-//            $this->mailer->send($email);
-//        }
-//
-//      // Mail d'édition d'un compte utilisateur
-//      if ($currentAction === 'edit' && $currentEntityFqcn === 'App\Entity\User') {
-//          $userRole = $event->getAdminContext()->getEntity()->getInstance()->getRoles();
-//
-//          //Mail d'édition d'un compte partenaire
-//          if (in_array('ROLE_PARTNER', $userRole)) {
-//              $userEmail = $event->getAdminContext()->getEntity()->getInstance()->getEmail();
-//              $userModules = $event->getAdminContext()->getEntity()->getInstance()->getModules();
-//          }
-      }
+        // Mail de modification d'accès à un module (lors de la création du module)
+        if ($entity instanceof Module) {
+            if (is_null($entity->getUsers())) {
+                return;
+            }
+            $users = $entity->getUsers()->toArray();
+            foreach ($users as $user) {
+                $email = (new TemplatedEmail())
+                    ->from('swapaccess.contact@gmail.com')
+                    ->to($user->getEmail())
+                    ->subject('Vos accès ont étés modifiés.')
+                    ->htmlTemplate(template: 'moduleInformationsEmail.html.twig')
+                    ->context([
+                        'userEmail' => $user->getEmail(),
+                        'userModules' => $user->getModules()->toArray(),
+                    ]);
+                $this->mailer->send($email);
+            }
+        }
+    }
+
+    public function onUpdateEmail(AfterEntityUpdatedEvent $event)
+    {
+        $entity = $event->getEntityInstance();
+
+        // Mail d'association d'un compte à un partenaire/structure (on update)
+        if ($entity instanceof User) {
+            if (is_null($entity->getPartner()) && (is_null($entity->getStructure()))) {
+                return;
+            }
+
+            //Mail d'association d'un compte à un partenaire (on update)
+            if (!(is_null($entity->getPartner()))) {
+                $partner = $entity->getPartner();
+                $partnerStructures = $partner->getStructures()->toArray();
+                $partnerName = $partner->getName();
+                $userEmail = $entity->getEmail();
+                $userModules = $entity->getModules()->toArray();
+                $email = (new TemplatedEmail())
+                    ->from('swapaccess.contact@gmail.com')
+                    ->to($userEmail)
+                    ->subject('Modification de compte SwapAccess.')
+                    ->htmlTemplate('editAccountEmail.html.Twig')
+                    ->context([
+                        'userEmail' => $userEmail,
+                        'partnerName' => $partnerName,
+                        'partnerStructures' => $partnerStructures,
+                        'userModules' => $userModules,
+                    ]);
+                $this->mailer->send($email);
+            }
+
+            // Mail d'association d'un compte à une structure (on update)
+            if (!(is_null($entity->getStructure()))) {
+                $structure = $entity->getStructure();
+                $structurePartnerName = $structure->getPartner()->getName();
+                $structureAddress = $structure->getAddress();
+                $structureZipCode = $structure->getZipCode();
+                $structureCity = $structure->getCity();
+                $userEmail = $entity->getEmail();
+                $userModules = $entity->getModules()->toArray();
+                $email = (new TemplatedEmail())
+                    ->from('swapaccess.contact@gmail.com')
+                    ->to($userEmail)
+                    ->addTo($structure->getPartner()->getUser()->getEmail())
+                    ->subject('Modification de compte SwapAccess.')
+                    ->htmlTemplate('editStructureAccountEmail.html.Twig')
+                    ->context([
+                        'userEmail' => $userEmail,
+                        'userModules' => $userModules,
+                        'structurePartnerName' => $structurePartnerName,
+                        'structureAddress' => $structureAddress,
+                        'structureZipCode' => $structureZipCode,
+                        'structureCity' => $structureCity,
+                    ]);
+                $this->mailer->send($email);
+            }
+        }
+
+        // Mail de modification des structures associé à un partenaire (on update)
+        if ($entity instanceof Partner) {
+            if (is_null($entity->getUser())) {
+                return;
+            }
+
+            $userEmail = $entity->getUser()->getEmail();
+            $userModules = $entity->getUser()->getModules();
+            $partnerName = $entity->getName();
+            $partnerStructures = $entity->getStructures()->toArray();
+            $email = (new TemplatedEmail())
+                ->from('swapaccess.contact@gmail.com')
+                ->to($userEmail)
+                ->subject('Modification de compte SwapAccess.')
+                ->htmlTemplate('editPartnerAccountEmail.html.Twig')
+                ->context([
+                    'userEmail' => $userEmail,
+                    'userModules' => $userModules,
+                    'partnerName' => $partnerName,
+                    'partnerStructures' => $partnerStructures,
+                ]);
+            $this->mailer->send($email);
+        }
+
+        // Mail de modification d'une structure (on update)
+        if ($entity instanceof Structure) {
+            if ((is_null($entity->getUser())) && (is_null($entity->getPartner()->getUser()))) {
+                return;
+            }
+
+                // Mail de modification de la structure aux utilisateurs concernés (on update)
+                $userEmail = $entity->getUser()->getEmail();
+                $userModules = $entity->getUser()->getModules()->toArray();
+                $structureAddress = $entity->getAddress();
+                $structureZipCode = $entity->getZipCode();
+                $structureCity = $entity->getCity();
+                $structurePartner = $entity->getPartner();
+                $email = (new TemplatedEmail())
+                    ->from('swapaccess.contact@gmail.com')
+                    ->to($userEmail)
+                    ->addTo($structurePartner->getUser()->getEmail())
+                    ->subject('Modification de compte SwapAccess.')
+                    ->htmlTemplate('editStructureAccountEmail.html.Twig')
+                    ->context([
+                        'userEmail' => $userEmail,
+                        'userModules' => $userModules,
+                        'structurePartnerName' => $structurePartner->getName(),
+                        'structureAddress' => $structureAddress,
+                        'structureZipCode' => $structureZipCode,
+                        'structureCity' => $structureCity,
+                    ]);
+                $this->mailer->send($email);
+        }
     }
 
 
