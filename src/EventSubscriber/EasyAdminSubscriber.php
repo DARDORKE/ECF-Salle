@@ -38,8 +38,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         return [
             BeforeEntityPersistedEvent::class => ['encodePassword'],
             AfterEntityPersistedEvent::class => ['onCreateEmail'],
-            AfterEntityUpdatedEvent::class => ['onUpdateEmail']
-
+            AfterEntityUpdatedEvent::class => ['onUpdateEmail'],
         ];
     }
 
