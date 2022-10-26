@@ -1,0 +1,22 @@
+<h1>Modification sur votre compte Swap Access !</h1>
+
+<p>Votre compte Swapp Access a été modifié !</p>
+
+<p>Bonne nouvelle !</p>
+
+<p>Un nouveau module a été créé et vous y avez accès !</p>
+
+<p>Vous pouvez accéder à la liste de vos modules sur votre espace.</p>
+
+{% if userRole === 'ROLE_PARTNER' %}
+    <p>
+        <a href="{{ url('app_partner') }}">Votre espace partenaire.</a>
+    </p>
+{% endif %}
+
+{% if userRole === 'ROLE_STRUCTURE' %}
+    <p>
+        <a href="{{ url('app_structure') }}">Votre espace structure.</a>
+    </p>
+{% endif %}
+

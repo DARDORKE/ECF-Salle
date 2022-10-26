@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PartnerController!{% endblock %}
+{% block title %}Bonjour Partenaire !{% endblock %}
 
 {% block body %}
 <style>
@@ -9,12 +9,30 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1> Bonjour {{ partnerName }}! </h1>
+    <a href="{{ path('app_logout') }}">Se déconnecter</a>
+    <div>
+        <p>
+            Liste des modules accessibles :
+        </p>
+        <ul>
+            {% for module in userModules %}
+                <li>{{ module }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <p>
+            Liste de vos structures:
+        </p>
+        <ul>
+            {% for structure in partnerStructures %}
+                <li>
+                    {{ structure }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/ECF/src/Controller/PartnerController.php'|file_link(0) }}">src/Controller/PartnerController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/ECF/templates/partner/index.html.twig'|file_link(0) }}">templates/partner/index.html.twig</a></code></li>
-    </ul>
 </div>
 {% endblock %}

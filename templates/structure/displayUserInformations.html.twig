@@ -1,20 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello StructureController!{% endblock %}
+{% block title %}Bonjour Partenaire !{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="example-wrapper">
+        <h1> Bonjour ! </h1>
+        <a href="{{ path('app_logout') }}">Se déconnecter</a>
+        <div>
+            <p>
+                Informations sur votre compte :
+            </p>
+            <p>
+                Compte :
+            </p>
+            <ul><li>{{ user }}</li></ul>
+            <p>
+                Structure :
+            </p>
+            <ul><li>{{ structure }}</li></ul>
+        </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/ECF/src/Controller/StructureController.php'|file_link(0) }}">src/Controller/StructureController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/ECF/templates/structure/index.html.twig'|file_link(0) }}">templates/structure/index.html.twig</a></code></li>
-    </ul>
-</div>
+        <div>
+            <p>
+                Liste des modules accessibles :
+            </p>
+            <ul>
+                {% for module in userModules %}
+                    <li>{{ module }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            <p>
+                Informations de votre partenaire :
+            </p>
+            <p>
+                {{ structurePartner }}
+            </p>
+            <p>{{ partnerEmail }}</p>
+        </div>
+    </div>
 {% endblock %}

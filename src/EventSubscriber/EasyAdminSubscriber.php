@@ -76,7 +76,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
                 ->from('swapaccess.contact@gmail.com')
                 ->to($userEmail)
                 ->subject('Modification de votre compte SwapAccess.')
-                ->htmlTemplate('editAccountEmail.html.Twig')
+                ->htmlTemplate('email/createPartnerEmail.html.twig')
                 ->context([
                     'userEmail' => $userEmail,
                     'partnerName' => $partnerName,
@@ -91,11 +91,6 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             if (is_null($entity->getUser()) && is_null($entity->getPartner())) {
                 return;
             }
-
-            $structureAddress = $entity->getAddress();
-            $structureZipCode = $entity->getZipCode();
-            $structureCity = $entity->getCity();
-
             // Mail d'association de la structure à un compte
             if (!(is_null($entity->getUser()))) {
                 $userEmail = $entity->getUser()->getEmail();
@@ -104,12 +99,10 @@ class EasyAdminSubscriber implements EventSubscriberInterface
                     ->from('swapaccess.contact@gmail.com')
                     ->to($userEmail)
                     ->subject('Modification de votre compte SwapAccess.')
-                    ->htmlTemplate('editAccountEmail.html.Twig')
+                    ->htmlTemplate('email/createStructureEmail.html.twig')
                     ->context([
                         'userEmail' => $userEmail,
-                        'structureAddress' => $structureAddress,
-                        'structureZipCode' => $structureZipCode,
-                        'structureCity' => $structureCity,
+                        'structure' => $entity,
                         'userModules' => $userModules
                     ]);
                 $this->mailer->send($email);
@@ -122,12 +115,10 @@ class EasyAdminSubscriber implements EventSubscriberInterface
                     ->from('swapaccess.contact@gmail.com')
                     ->to($partnerEmail)
                     ->subject('Création d\'une nouvelle structure.')
-                    ->htmlTemplate('structureConfirmationEmail.html.Twig')
+                    ->htmlTemplate('email/createdStructureConfirmationEmail.html.twig')
                     ->context([
                         'userEmail' => $partnerEmail,
-                        'structureAddress' => $structureAddress,
-                        'structureZipCode' => $structureZipCode,
-                        'structureCity' => $structureCity,
+                        'structure' => $entity
                     ]);
                 $this->mailer->send($email);
             }
@@ -138,16 +129,17 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             if (is_null($entity->getUsers())) {
                 return;
             }
-            $users = $entity->getUsers()->toArray();
+            $users = $entity->getUsers();
             foreach ($users as $user) {
                 $email = (new TemplatedEmail())
                     ->from('swapaccess.contact@gmail.com')
                     ->to($user->getEmail())
                     ->subject('Vos accès ont étés modifiés.')
-                    ->htmlTemplate(template: 'moduleInformationsEmail.html.twig')
+                    ->htmlTemplate('email/createdModuleConfirmationEmail.html.twig')
                     ->context([
                         'userEmail' => $user->getEmail(),
-                        'userModules' => $user->getModules()->toArray(),
+                        'userModules' => $user->getModules(),
+                        'userRole' => $user->getRoles(),
                     ]);
                 $this->mailer->send($email);
             }
@@ -167,20 +159,15 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             //Mail d'association d'un compte à un partenaire (on update)
             if (!(is_null($entity->getPartner()))) {
                 $partner = $entity->getPartner();
-                $partnerStructures = $partner->getStructures()->toArray();
                 $partnerName = $partner->getName();
                 $userEmail = $entity->getEmail();
-                $userModules = $entity->getModules()->toArray();
                 $email = (new TemplatedEmail())
                     ->from('swapaccess.contact@gmail.com')
                     ->to($userEmail)
                     ->subject('Modification de compte SwapAccess.')
-                    ->htmlTemplate('editAccountEmail.html.Twig')
+                    ->htmlTemplate('email/createPartnerEmail.html.twig')
                     ->context([
-                        'userEmail' => $userEmail,
                         'partnerName' => $partnerName,
-                        'partnerStructures' => $partnerStructures,
-                        'userModules' => $userModules,
                     ]);
                 $this->mailer->send($email);
             }
@@ -188,27 +175,26 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             // Mail d'association d'un compte à une structure (on update)
             if (!(is_null($entity->getStructure()))) {
                 $structure = $entity->getStructure();
-                $structurePartnerName = $structure->getPartner()->getName();
-                $structureAddress = $structure->getAddress();
-                $structureZipCode = $structure->getZipCode();
-                $structureCity = $structure->getCity();
                 $userEmail = $entity->getEmail();
-                $userModules = $entity->getModules()->toArray();
-                $email = (new TemplatedEmail())
+                $partnerEmail = $structure->getPartner()->getUser()->getEmail();
+                $emailStructure = (new TemplatedEmail())
                     ->from('swapaccess.contact@gmail.com')
                     ->to($userEmail)
-                    ->addTo($structure->getPartner()->getUser()->getEmail())
-                    ->subject('Modification de compte SwapAccess.')
-                    ->htmlTemplate('editStructureAccountEmail.html.Twig')
+                    ->subject('Modification de votre compte SwapAccess.')
+                    ->htmlTemplate('email/createStructureEmail.html.twig')
                     ->context([
-                        'userEmail' => $userEmail,
-                        'userModules' => $userModules,
-                        'structurePartnerName' => $structurePartnerName,
-                        'structureAddress' => $structureAddress,
-                        'structureZipCode' => $structureZipCode,
-                        'structureCity' => $structureCity,
+                        'structure' => $structure
                     ]);
-                $this->mailer->send($email);
+                $emailPartner = (new TemplatedEmail())
+                    ->from('swapaccess.contact@gmail.com')
+                    ->to($partnerEmail)
+                    ->subject('Modification de l\'une de vos structure SwapAccess.')
+                    ->htmlTemplate('email/createdStructureConfirmationEmail.html.twig')
+                    ->context([
+                        'structure' => $structure
+                    ]);
+                $this->mailer->send($emailStructure);
+                $this->mailer->send($emailPartner);
             }
         }
 
@@ -219,19 +205,14 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             }
 
             $userEmail = $entity->getUser()->getEmail();
-            $userModules = $entity->getUser()->getModules();
             $partnerName = $entity->getName();
-            $partnerStructures = $entity->getStructures()->toArray();
             $email = (new TemplatedEmail())
                 ->from('swapaccess.contact@gmail.com')
                 ->to($userEmail)
                 ->subject('Modification de compte SwapAccess.')
-                ->htmlTemplate('editPartnerAccountEmail.html.Twig')
+                ->htmlTemplate('email/createPartnerEmail.html.twig')
                 ->context([
-                    'userEmail' => $userEmail,
-                    'userModules' => $userModules,
                     'partnerName' => $partnerName,
-                    'partnerStructures' => $partnerStructures,
                 ]);
             $this->mailer->send($email);
         }
@@ -241,29 +222,36 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             if ((is_null($entity->getUser())) && (is_null($entity->getPartner()->getUser()))) {
                 return;
             }
-
-                // Mail de modification de la structure aux utilisateurs concernés (on update)
-                $userEmail = $entity->getUser()->getEmail();
-                $userModules = $entity->getUser()->getModules()->toArray();
-                $structureAddress = $entity->getAddress();
-                $structureZipCode = $entity->getZipCode();
-                $structureCity = $entity->getCity();
-                $structurePartner = $entity->getPartner();
-                $email = (new TemplatedEmail())
-                    ->from('swapaccess.contact@gmail.com')
-                    ->to($userEmail)
-                    ->addTo($structurePartner->getUser()->getEmail())
-                    ->subject('Modification de compte SwapAccess.')
-                    ->htmlTemplate('editStructureAccountEmail.html.Twig')
-                    ->context([
-                        'userEmail' => $userEmail,
-                        'userModules' => $userModules,
-                        'structurePartnerName' => $structurePartner->getName(),
-                        'structureAddress' => $structureAddress,
-                        'structureZipCode' => $structureZipCode,
-                        'structureCity' => $structureCity,
-                    ]);
-                $this->mailer->send($email);
+                // Mail de modification de la structure à l'utilisateur (on update)
+                if(!(is_null($entity->getUser()))){
+                    $userEmail = $entity->getUser()->getEmail();
+                    $structurePartner = $entity->getPartner();
+                    $partnerEmail = $structurePartner->getUser()->getEmail();
+                    $emailStructure = (new TemplatedEmail())
+                        ->from('swapaccess.contact@gmail.com')
+                        ->to($userEmail)
+                        ->subject('Modification de compte SwapAccess.')
+                        ->htmlTemplate('email/createStructureEmail.html.twig')
+                        ->context([
+                            'structure' => $entity,
+                        ]);
+                    $this->mailer->send($emailStructure);
+                }
+                 // Mail de confirmation au partenaire associé (on update)
+                if(!(is_null($entity->getPartner()->getUser()))){
+                    $structurePartner = $entity->getPartner();
+                    $partnerEmail = $structurePartner->getUser()->getEmail();
+                    $emailPartner = (new TemplatedEmail())
+                        ->from('swapaccess.contact@gmail.com')
+                        ->to($partnerEmail)
+                        ->addTo($structurePartner->getUser()->getEmail())
+                        ->subject('Modification de votre compte SwapAccess.')
+                        ->htmlTemplate('email/createdStructureConfirmationEmail.html.twig')
+                        ->context([
+                            'structure' => $entity,
+                        ]);
+                    $this->mailer->send($emailPartner);
+                }
         }
     }
 
