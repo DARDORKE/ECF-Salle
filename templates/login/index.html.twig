@@ -3,38 +3,84 @@
 {% block title %}Connexion à Swap Access{% endblock %}
 
 {% block body %}
-<form action="{{ path('app_login') }}" method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <section>
+        <div class="container d-flex flex-column">
+            <div class="row align-items-center justify-content-center gx-0 min-vh-100">
+                <div class="col-12 col-md-6 col-lg-4 py-8 py-md-11">
 
-    {% if app.user %}
-        <div class="mb-3">
-            Bonjour, vous êtes déjà connecté en tant que {{ app.user.userIdentifier }} !
-            Si vous changez de compte vous serez automatiquement déconnecté de {{ app.user.userIdentifier }}.
-            <a href="{{ path('app_logout') }}">Se déconnecter</a>
-        </div>
-    {% endif %}
+                    <!-- Heading -->
+                    <h1 class="mb-0 fw-bold">
+                        SwapAccess
+                    </h1>
 
-    <h1 class="h3 mb-3 font-weight-normal">Veuillez vous connecter</h1>
-    <label for="inputEmail">Adresse email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Mot de passe</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                    <!-- Text -->
+                    <p class="mb-6 text-muted">
+                        Connexion
+                    </p>
 
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <!-- Form -->
+                    <form class="mb-6" action="{{ path('app_login') }}" method="post">
 
-    <p><a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a></p>
+                        {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Rester connecter
-            </label>
-        </div>
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label class="form-label" for="inputEmail">
+                                Adresse email :
+                            </label>
+                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus placeholder="adresse@mail.com">
+                        </div>
 
+                        <!-- Password -->
+                        <div class="form-group mb-5">
+                            <label class="form-label" for="inputPassword">
+                                Mot de passe :
+                            </label>
+                            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required placeholder="Saisissez votre mot de passe">
+                            <p><a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a></p>
+                        </div>
 
-    <button class="btn btn-lg btn-primary" type="submit">Se connecter</button>
-</form>
+                        <!-- CSRF Protection -->
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        <!-- Remember me option -->
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" name="_remember_me"> Rester connecter
+                            </label>
+                        </div>
+
+                        <!-- Submit -->
+                        <button class="btn w-100 btn-primary" type="submit">
+                            Se connecter
+                        </button>
+
+                    </form>
+
+                    {% if app.user %}
+                        <div class="mb-0 fs-sm text-muted">
+                            Bonjour, vous êtes déjà connecté en tant que {{ app.user.userIdentifier }} !
+                            Si vous changez de compte vous serez automatiquement déconnecté de {{ app.user.userIdentifier }}.
+                            <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                        </div>
+                    {% endif %}
+
+                </div>
+                <div class="col-lg-7 offset-lg-1 align-self-stretch d-none d-lg-block">
+
+                    <!-- Image -->
+                    <div class="h-100 w-cover bg-cover" style="background-image: url({{ asset('build/images/covers/cover-14.jpg') }});"></div>
+
+                    <!-- Shape -->
+                    <div class="shape shape-start shape-fluid-y text-white">
+                        <svg viewBox="0 0 100 1544" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v386l-50 772v386H0V0z" fill="currentColor"/></svg>            </div>
+
+                </div>
+            </div> <!-- / .row -->
+        </div> <!-- / .container -->
+    </section>
 {% endblock %}
 
 
