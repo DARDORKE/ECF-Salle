@@ -3,20 +3,53 @@
 {% block title %}Réinitialisation de votre mot de passe{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-    <h1>Réinitialisation de votre mot de passe</h1>
+    <section>
+        <div class="container d-flex flex-column">
+            <div class="row align-items-center justify-content-center gx-0 min-vh-100">
+                <div class="col-12 col-md-6 col-lg-4 py-8 py-md-11">
+                    {% for flash_error in app.flashes('reset_password_error') %}
+                        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                    {% endfor %}
+                    <!-- Heading -->
+                    <h1 class="mb-0 fw-bolder align-content-center">
+                       Réinitialisation du mot de passe
+                    </h1>
 
-    {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <small>
-                Veuillez saisir votre adresse email et nous vous enverrons un lien
-                pour réinitialiser votre mot de passe.
-            </small>
-        </div>
+                    <!-- Text -->
+                    <p class="mb-6 text-muted">
+                        Saisissez votre adresse email pour réinitialiser votre mot de passe
+                    </p>
 
-        <button class="btn btn-primary">Envoyer l'email de réinitialisation</button>
-    {{ form_end(requestForm) }}
+                    <!-- Form -->
+                    {{ form_start(requestForm) }}
+
+                        <!-- Email -->
+                        {{ form_row(requestForm.email) }}
+
+                        <!-- Submit -->
+                        <button class="btn w-100 btn-primary" type="submit">
+                           Envoyer
+                        </button>
+                    
+                    {{ form_end(requestForm) }}
+                    <!-- Text -->
+                    <p class="mb-0 fs-sm text-muted">
+                        Pour vous connecter ! <a href="{{ path('app_login') }}">Se connecter</a>.
+                    </p>
+
+                </div>
+                <div class="col-lg-7 offset-lg-1 align-self-stretch d-none d-lg-block">
+
+                    <!-- Image -->
+                    <div class="h-100 w-cover bg-cover" style="background-image: url({{asset('build/images/covers/cover-16.jpg') }});"></div>
+
+                    <!-- Shape -->
+                    <div class="shape shape-start shape-fluid-y text-white">
+
+                    </div>
+
+                </div>
+            </div> <!-- / .row -->
+        </div> <!-- / .container -->
+    </section>
 {% endblock %}
