@@ -3,10 +3,26 @@
 {% block title %}Réinitialisation du mot de passe{% endblock %}
 
 {% block body %}
-    <h1>Réinitialisation de votre mot de passe</h1>
+    <section class="section-border border-primary">
+        <div class="container d-flex flex-column">
+            <div class="row align-items-center justify-content-center gx-0 min-vh-100">
+                <div class="col-12 col-md-5 col-lg-4 py-8 py-md-11">
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">Changer le mot de passe</button>
-    {{ form_end(resetForm) }}
+                    <!-- Heading -->
+                    <h1 class="mb-0 fw-bold text-center">
+                        Réinitialisation de votre mot de passe
+                    </h1>
+
+                    <!-- Text -->
+                    <p class="mb-6 text-center text-muted">
+                        Saisissez votre nouveau mot de passe
+                    </p>
+                    {{ form_start(resetForm) }}
+                    {{ form_row(resetForm.plainPassword) }}
+                    <button class="btn w-100 btn-primary">Changer le mot de passe</button>
+                    {{ form_end(resetForm) }}
+                </div>
+            </div> <!-- / .row -->
+        </div> <!-- / .container -->
+    </section>
 {% endblock %}

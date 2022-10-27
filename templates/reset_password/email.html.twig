@@ -1,9 +1,17 @@
-<h1>Bonjour !</h1>
+<body class="bg-light">
+<div class="container">
+    <img class="ax-center my-10 w-24" src="{{ asset('img/logo.png') }}" />
+    <div class="card p-6 p-lg-10 space-y-4">
+        <h1 class="h3 fw-700 text-center">
+            Nous avons reçu une demande de réinitialisation de mot de passe pour votre compte.
+        </h1>
+        <p class="text-center">
+            Pour réinitialiser votre mot de passe, veuillez s'il vous plaît vous rendre sur le lien suivant :
+        </p>
+        <a class="btn btn-primary p-3 fw-700 text-center" href="{{ url('app_reset_password', {token: resetToken.token})}}">Réinitialiser mon mot de passe</a>
 
-<p>Pour réinitialiser votre mot de passe, veuillez s'il vous plaît vous rendre sur le lien suivant</p>
-
-<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
-
-<p>Ce lien expirera dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
-
-<p>A bientôt !</p>
+        <p class="text-center text-muted">Ce lien expirera dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+    </div>
+    <div class="ax-center mt-10 w-40 text-center">SwapAccess</div>
+</div>
+</body>
