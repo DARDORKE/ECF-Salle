@@ -59,15 +59,6 @@
                         </button>
 
                     </form>
-
-                    {% if app.user %}
-                        <div class="mb-0 fs-sm text-muted">
-                            Bonjour, vous êtes déjà connecté en tant que {{ app.user.userIdentifier }} !
-                            Si vous changez de compte vous serez automatiquement déconnecté de {{ app.user.userIdentifier }}.
-                            <a href="{{ path('app_logout') }}">Se déconnecter</a>
-                        </div>
-                    {% endif %}
-
                 </div>
                 <div class="col-lg-7 offset-lg-1 align-self-stretch d-none d-lg-block">
 

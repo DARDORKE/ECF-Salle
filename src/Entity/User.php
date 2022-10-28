@@ -52,9 +52,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(name: "structure_id", referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?Structure $structure = null;
 
+    /**
+     * @var Collection<int, ResetPasswordRequest>
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ResetPasswordRequest::class, cascade: ["remove"])]
+    private Collection $resetPasswordRequest;
+
     public function __construct()
     {
         $this->modules = new ArrayCollection();
+        $this->resetPasswordRequest = new ArrayCollection();
     }
 
 
@@ -190,4 +197,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, ResetPasswordRequest>
+     */
+    public function getResetPasswordRequest(): Collection
+    {
+        return $this->resetPasswordRequest;
+    }
+
 }

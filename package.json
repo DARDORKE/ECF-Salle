@@ -31,7 +31,7 @@
     "dependencies": {
         "@popperjs/core": "^2.10.2",
         "aos": "^3.0.0-beta.6",
-        "autoprefixer": "^10.4.12",
+        "autoprefixer": "^10.4.13",
         "bigpicture": "^2.5.3",
         "bootstrap": "^5.1.3",
         "choices.js": "^9.0.1",

@@ -24,6 +24,7 @@ class DashboardController extends AbstractDashboardController
         $user = $this->getUser();
 
         if ($user->isEnabled() === false) {
+
             throw $this->createAccessDeniedException('Votre compte est désactivé, veuillez contacter un administrateur afin qu\'il active votre compte.');
         }
 
