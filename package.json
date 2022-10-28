@@ -8,6 +8,7 @@
         "@symfony/webpack-encore": "^4.0.0",
         "core-js": "^3.23.0",
         "file-loader": "^6.0.0",
+        "foundation-emails": "^2.4.0",
         "handlebars-webpack-plugin": "^2.2.1",
         "jquery": "^3.6.1",
         "popper.js": "^1.16.1",
