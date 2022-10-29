@@ -1,110 +1,115 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <nav class="navbar navbar-dark bg-dark" aria-label="First navbar example">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Never expand</a>
-            <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-white border-bottom">
+        <div class="container">
+
+            <!-- Brand -->
+            <a class="navbar-brand" href="{{ path('app_login') }}">
+                <img src="{{ asset('img/logoTitle.png') }}" class="d-none d-md-block" alt="logo" width="250px">
+                <img src="{{ asset('img/logo.png') }}" class="d-md-none" alt="logo" width="60px">
+            </a>
+
+            <!-- Toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="navbar-collapse collapse" id="navbarsExample01" style="">
-                <ul class="navbar-nav me-auto mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <!-- Collapse -->
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+
+                <!-- Toggler -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fe fe-x"></i>
+                </button>
+
+
+                <!-- Navigation -->
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown d-lg-none">
+                        <a class="nav-link dropdown-toggle text-center" id="navbarLandings" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                            VOTRE COMPTE
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-xl p-0" aria-labelledby="navbarLandings">
+                            <div class="row gx-0">
+                                <div class="col-12 col-lg-6">
+                                    <div class="dropdown-body">
+                                        <div class="row gx-0">
+                                                <!-- Modules -->
+                                                <a class="dropdown-item text-center" href="#" id="modules-link">
+                                                    Modules
+                                                </a>
+                                                <!-- Structures -->
+                                                <a class="dropdown-item text-center" href="#" id="structures-link">
+                                                    Structures
+                                                </a>
+
+                                        </div> <!-- / .row -->
+                                    </div>
+                                </div>
+                            </div> <!-- / .row -->
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled">Disabled</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
+
+                <!-- Button -->
+                <a class="navbar-btn btn btn-sm btn-outline-warning lift ms-auto" href="{{ path('app_logout') }}">
+                    Se déconnecter
+                </a>
                 </ul>
-                <form role="search">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                </form>
             </div>
         </div>
     </nav>
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
-        <div class="container-md justify-content-between">
 
-            <!-- Brand -->
-                <a class="navbar-brand" href="{{ path('app_login') }}">
-                    <img src="{{ asset('img/title.png') }}" class="navbar-brand-img" alt="logo+title">
-                </a>
-
-                <!-- Disconnect -->
-            <!-- Disconnect -->
-
-            <div class="col-auto">
-                <a class="navbar-brand" href="{{ path('app_logout') }}">
-                        <button class="btn btn-sm btn-outline-warning d-none d-sm-block">
-                            Déconnexion
-                        </button>
-                        <img src="{{ asset('img/logout.png') }}" class="d-block d-sm-none " width="45px">
-                    </a>
-            </div>
-
-        </div> <!-- / .container -->
-    </nav>
-
-    <!-- HEADER -->
-    <header class="bg-black pt-9 pb-11 d-none d-md-block">
+    <header class="bg-black pt-13 pb-6">
         <div class="container-md">
             <div class="row align-items-center">
                 <div class="col">
 
                     <!-- Heading -->
-                    <h1 class="fw-bold text-white mb-2">
-                        Compte SwapAccess - Espace Partenaire
-                    </h1>
-
-                    <!-- Text -->
-                    <p class="fs-lg text-white-75 mb-0">
-                        Identifiant : <a class="text-reset" href="mailto:{{ userEmail }}">{{ userEmail}}</a>
-                    </p>
-
+                    <h2 class="fw-bold text-white mb-2 text-center text-lg-start pb-5">
+                        Vos informations personnelles :
+                    </h2>
+                    <ul>
+                        <li class="fs-lg text-white-75 mb-0 text-start pb-5">
+                            Partenaire : {{ partnerName }}
+                        </li>
+                        <li class="fs-lg text-white-75 mb-0 text-start pb-5">
+                            Identifiant : {{ userEmail }}
+                        </li>
+                    </ul>
+                </div>
             </div> <!-- / .row -->
         </div> <!-- / .container -->
     </header>
 
     <!-- MAIN -->
-    <main class="pb-8 pb-md-11 mt-md-n6">
+    <main class="pb-8 mt-md-n6">
         <div class="container-md">
-            <div class="row">
-                <div class="col-12 col-md-3">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-3 d-none d-lg-block">
 
                     <!-- Card -->
                     <div class="card card-bleed border-bottom border-bottom-md-0 shadow-light-lg">
 
                         <!-- Collapse -->
-                        <div class="collapse d-md-block" id="sidenavCollapse">
+                        <div class="collapse d-block" id="sidenavCollapse">
                             <div class="card-body">
 
                                 <!-- Heading -->
-                                <h6 class="fw-bold text-uppercase mb-3">
-                                    Espace Partenaire
+                                <h6 class="fw-bolder text-uppercase mb-3 text-center">
+                                    VOTRE COMPTE
                                 </h6>
 
                                 <!-- List -->
                                 <ul class="card-list list text-gray-700 mb-6">
                                     <li class="list-item active">
-                                        <a class="list-link text-reset" href="#">
+                                        <a class="list-link text-reset" href="#" id="modules-link">
                                             Modules
                                         </a>
                                     </li>
                                     <li class="list-item">
-                                        <a class="list-link text-reset" href="#">
+                                        <a class="list-link text-reset" href="#" id="'structure-link">
                                             Structures
                                         </a>
                                     </li>
@@ -117,305 +122,63 @@
                 </div>
                 <div class="col-12 col-md-9">
 
-                    <!-- Card -->
-                    <div class="card card-bleed shadow-light-lg mb-6">
-                        <div class="card-header text-center">
-                            <div class="row align-items-center">
-                                <div class="col-sm-6">
+                    <!-- Modules Card -->
+                    <div class="card card-bleed shadow-light-lg mb-6 " id="modules-card">
+                        <div class="card-header">
 
-                                    <!-- Heading -->
-                                    <h4 class="mb-0 fw-bolder">
-                                        Modules
-                                    </h4>
-
-                                </div>
-                            </div>
+                            <!-- Heading -->
+                            <h4 class="mb-0 fw-bolder text-center">
+                               VOS MODULES
+                            </h4>
                         </div>
 
+                        {% for module in userModules %}
                         <div class="card-body">
 
-                            <!-- List modules -->
-                            <div class="list-group list-group-flush">
-                                {% for module in userModules %}
-                                <div class="list-group-item">
-                                    <div class="row align-items-center text-center">
-                                        <div class="col">
-                                            <p class="mb-0">
-                                                {{ module }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                                <div class="list-group-item">
-                                    <div class="row align-items-center">
-                                        <div class="col">
-
-                                            <!-- Heading -->
-                                            <p class="mb-0">
-                                                SMS Recovery <i class="fe fe-info text-gray-500" data-bs-toggle="tooltip" title="We use the the phone number you provide in General"></i>
-                                            </p>
-
-                                            <!-- Text -->
-                                            <small class="text-gray-700">
-                                                Standard messaging rates apply
-                                            </small>
-
-                                        </div>
-                                        <div class="col-auto">
-
-                                            <!-- Button -->
-                                            <button class="btn btn-xs btn-danger">
-                                                Disable
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-group-item">
-                                    <div class="row align-items-center">
-                                        <div class="col">
-
-                                            <!-- Heading -->
-                                            <p class="mb-0">
-                                                Recovery Codes <i class="fe fe-info text-gray-500" data-bs-toggle="tooltip" title="We use the the phone number you provide in General"></i>
-                                            </p>
-
-                                            <!-- Text -->
-                                            <small class="text-gray-700">
-                                                One time use safety codes
-                                            </small>
-
-                                        </div>
-                                        <div class="col-auto">
-
-                                            <!-- Button -->
-                                            <button class="btn btn-xs btn-outline-white">
-                                                Reveal
-                                            </button>
-
-                                        </div>
+                            <div class="list-group-item">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <p class="mb-0">
+                                            {{ module }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
+                        {% endfor %}
+
                     </div>
 
-                    <!-- Card -->
-                    <div class="card card-bleed shadow-light-lg mb-6">
+                    <!-- Structures Card -->
+                    <div class="card card-bleed shadow-light-lg mb-6" id="structure-card">
                         <div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col">
 
-                                    <!-- Heading -->
-                                    <h4 class="mb-0">
-                                        Password
-                                    </h4>
-
-                                </div>
-                                <div class="col-auto">
-
-                                    <!-- Link -->
-                                    <a class="small text-gray-700" href="#!">
-                                        Forgot your password?
-                                    </a>
-
-                                </div>
-                            </div>
+                            <!-- Heading -->
+                            <h4 class="mb-0 fw-bolder text-center">
+                                VOS STRUCTURES
+                            </h4>
                         </div>
-                        <div class="card-body">
 
-                            <!-- Current password -->
-                            <div class="form-group">
-                                <label class="form-label" for="currentPassword">Current Password</label>
-                                <input class="form-control" id="currentPassword" type="password">
-                            </div>
+                        {% for structure in partnerStructures %}
+                            <div class="card-body">
 
-                            <!-- New password -->
-                            <div class="form-group">
-                                <label class="form-label" for="newPassword">New Password</label>
-                                <input class="form-control" id="newPassword" type="password">
-                            </div>
-
-                            <!-- Confirm password -->
-                            <div class="form-group">
-                                <label class="form-label" for="confirmPassword">Confirm Password</label>
-                                <input class="form-control" id="confirmPassword" type="password">
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col-12 col-md-auto">
-
-                                    <!-- Button -->
-                                    <button class="btn w-100 btn-primary" type="submit">
-                                        Update Password
-                                    </button>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- Card -->
-                    <div class="card card-bleed shadow-light-lg">
-                        <div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col">
-
-                                    <!-- Heading -->
-                                    <h4 class="mb-0">
-                                        Device History
-                                    </h4>
-
-                                </div>
-                                <div class="col-auto">
-
-                                    <!-- Link -->
-                                    <a class="small text-gray-700" href="#!">
-                                        Log out all
-                                    </a>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-
-                            <!-- List group -->
-                            <div class="list-group list-group-flush">
                                 <div class="list-group-item">
                                     <div class="row align-items-center">
-                                        <div class="col-auto">
-
-                                            <!-- Icon -->
-                                            <div class="icon icon-sm text-gray-400">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h24v24H0z"/><path d="M8 2.5c-.69 0-1.25.56-1.25 1.25v16.5c0 .69.56 1.25 1.25 1.25h8c.69 0 1.25-.56 1.25-1.25V3.75c0-.69-.56-1.25-1.25-1.25H8z" fill="#335EEA" opacity=".3"/><path d="M8 2.5c-.69 0-1.25.56-1.25 1.25v16.5c0 .69.56 1.25 1.25 1.25h8c.69 0 1.25-.56 1.25-1.25V3.75c0-.69-.56-1.25-1.25-1.25H8zM8 1h8a2.75 2.75 0 012.75 2.75v16.5A2.75 2.75 0 0116 23H8a2.75 2.75 0 01-2.75-2.75V3.75A2.75 2.75 0 018 1zm1.5.75h5a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-5a.5.5 0 01-.5-.5v-1a.5.5 0 01.5-.5z" fill="#335EEA"/></g></svg>                        </div>
-
-                                        </div>
-                                        <div class="col ms-n5">
-
-                                            <!-- Heading -->
+                                        <div class="col">
                                             <p class="mb-0">
-                                                iPhone 11
+                                                {{ structure }}
+                                                {%  if structure.user %}
+                                                    {% if structure.user.modules %}
+                                                         {{ structure.user.modules }}
+                                                    {% endif %}
+                                                {% endif %}
                                             </p>
-
-                                            <!-- Text -->
-                                            <small class="text-gray-700">
-                                                Los Angeles, CA · April 20 at 4:16PM
-                                            </small>
-
-                                        </div>
-                                        <div class="col-auto">
-
-                                            <!-- Button -->
-                                            <button class="btn btn-xs btn-outline-white">
-                                                Log out
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-group-item">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-
-                                            <!-- Icon -->
-                                            <div class="icon icon-sm text-gray-400">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h24v24H0z"/><path d="M5 5v11h14V5H5zm0-2h14c1.42 0 2 .716 2 1.6v12.8c0 .884-.58 1.6-2 1.6H5c-1.42 0-2-.716-2-1.6V4.6C3 3.716 3.58 3 5 3zm7 15a.5.5 0 100-1 .5.5 0 000 1z" fill="#335EEA"/><path fill="#335EEA" opacity=".3" d="M5 5v11h14V5z"/><rect fill="#335EEA" opacity=".3" x="10" y="20" width="4" height="1" rx=".5"/></g></svg>                        </div>
-
-                                        </div>
-                                        <div class="col ms-n5">
-
-                                            <!-- Heading -->
-                                            <p class="mb-0">
-                                                iMac OSX · Chrome v80.02
-                                            </p>
-
-                                            <!-- Text -->
-                                            <small class="text-gray-700">
-                                                Los Angeles, CA · April 20 at 4:16PM
-                                            </small>
-
-                                        </div>
-                                        <div class="col-auto">
-
-                                            <!-- Button -->
-                                            <button class="btn btn-xs btn-outline-white">
-                                                Log out
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-group-item">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-
-                                            <!-- Icon -->
-                                            <div class="icon icon-sm text-gray-400">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h24v24H0z"/><path d="M8 2.5c-.69 0-1.25.56-1.25 1.25v16.5c0 .69.56 1.25 1.25 1.25h8c.69 0 1.25-.56 1.25-1.25V3.75c0-.69-.56-1.25-1.25-1.25H8z" fill="#335EEA" opacity=".3"/><path d="M8 2.5c-.69 0-1.25.56-1.25 1.25v16.5c0 .69.56 1.25 1.25 1.25h8c.69 0 1.25-.56 1.25-1.25V3.75c0-.69-.56-1.25-1.25-1.25H8zM8 1h8a2.75 2.75 0 012.75 2.75v16.5A2.75 2.75 0 0116 23H8a2.75 2.75 0 01-2.75-2.75V3.75A2.75 2.75 0 018 1zm1.5.75h5a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-5a.5.5 0 01-.5-.5v-1a.5.5 0 01.5-.5z" fill="#335EEA"/></g></svg>                        </div>
-
-                                        </div>
-                                        <div class="col ms-n5">
-
-                                            <!-- Heading -->
-                                            <p class="mb-0">
-                                                iPhone 11
-                                            </p>
-
-                                            <!-- Text -->
-                                            <small class="text-gray-700">
-                                                Los Angeles, CA · April 20 at 4:16PM
-                                            </small>
-
-                                        </div>
-                                        <div class="col-auto">
-
-                                            <!-- Button -->
-                                            <button class="btn btn-xs btn-outline-white">
-                                                Log out
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-group-item">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-
-                                            <!-- Icon -->
-                                            <div class="icon icon-sm text-gray-400">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h24v24H0z"/><path d="M5 5v11h14V5H5zm0-2h14c1.42 0 2 .716 2 1.6v12.8c0 .884-.58 1.6-2 1.6H5c-1.42 0-2-.716-2-1.6V4.6C3 3.716 3.58 3 5 3zm7 15a.5.5 0 100-1 .5.5 0 000 1z" fill="#335EEA"/><path fill="#335EEA" opacity=".3" d="M5 5v11h14V5z"/><rect fill="#335EEA" opacity=".3" x="10" y="20" width="4" height="1" rx=".5"/></g></svg>                        </div>
-
-                                        </div>
-                                        <div class="col ms-n5">
-
-                                            <!-- Heading -->
-                                            <p class="mb-0">
-                                                iMac OSX · Chrome v80.02
-                                            </p>
-
-                                            <!-- Text -->
-                                            <small class="text-gray-700">
-                                                Los Angeles, CA · April 20 at 4:16PM
-                                            </small>
-
-                                        </div>
-                                        <div class="col-auto">
-
-                                            <!-- Button -->
-                                            <button class="btn btn-xs btn-outline-white">
-                                                Log out
-                                            </button>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        {% endfor %}
 
-                        </div>
                     </div>
 
                 </div>
@@ -423,195 +186,13 @@
         </div> <!-- / .container -->
     </main>
 
-    <!-- CURVE -->
-    <div class="position-relative">
-        <div class="shape shape-bottom shape-fluid-x text-dark">
-            <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 48h2880V0h-720C1442.5 52 720 0 720 0H0v48z" fill="currentColor"/></svg>      </div>
-    </div>
 
-    <!-- FOOTER -->
-    <footer class="py-8 py-md-11 bg-dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-md-4 col-lg-3">
 
-                    <!-- Brand -->
-                    <img src="./assets/img/brand.svg" alt="..." class="footer-brand img-fluid mb-2">
 
-                    <!-- Text -->
-                    <p class="text-gray-700 mb-2">
-                        A better way to build.
-                    </p>
-
-                    <!-- Social -->
-                    <ul class="list-unstyled list-inline list-social mb-6 mb-md-0">
-                        <li class="list-inline-item list-social-item me-3">
-                            <a href="#!" class="text-decoration-none">
-                                <img src="./assets/img/icons/social/instagram.svg" class="list-social-icon" alt="...">
-                            </a>
-                        </li>
-                        <li class="list-inline-item list-social-item me-3">
-                            <a href="#!" class="text-decoration-none">
-                                <img src="./assets/img/icons/social/facebook.svg" class="list-social-icon" alt="...">
-                            </a>
-                        </li>
-                        <li class="list-inline-item list-social-item me-3">
-                            <a href="#!" class="text-decoration-none">
-                                <img src="./assets/img/icons/social/twitter.svg" class="list-social-icon" alt="...">
-                            </a>
-                        </li>
-                        <li class="list-inline-item list-social-item">
-                            <a href="#!" class="text-decoration-none">
-                                <img src="./assets/img/icons/social/pinterest.svg" class="list-social-icon" alt="...">
-                            </a>
-                        </li>
-                    </ul>
-
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-
-                    <!-- Heading -->
-                    <h6 class="fw-bold text-uppercase text-gray-700">
-                        Products
-                    </h6>
-
-                    <!-- List -->
-                    <ul class="list-unstyled text-muted mb-6 mb-md-8 mb-lg-0">
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                Page Builder
-                            </a>
-                        </li>
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                UI Kit
-                            </a>
-                        </li>
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                Styleguide
-                            </a>
-                        </li>
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                Documentation
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#!" class="text-reset">
-                                Changelog
-                            </a>
-                        </li>
-                    </ul>
-
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-
-                    <!-- Heading -->
-                    <h6 class="fw-bold text-uppercase text-gray-700">
-                        Services
-                    </h6>
-
-                    <!-- List -->
-                    <ul class="list-unstyled text-muted mb-6 mb-md-8 mb-lg-0">
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                Documentation
-                            </a>
-                        </li>
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                Changelog
-                            </a>
-                        </li>
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                Pagebuilder
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#!" class="text-reset">
-                                UI Kit
-                            </a>
-                        </li>
-                    </ul>
-
-                </div>
-                <div class="col-6 col-md-4 offset-md-4 col-lg-2 offset-lg-0">
-
-                    <!-- Heading -->
-                    <h6 class="fw-bold text-uppercase text-gray-700">
-                        Connect
-                    </h6>
-
-                    <!-- List -->
-                    <ul class="list-unstyled text-muted mb-0">
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                Page Builder
-                            </a>
-                        </li>
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                UI Kit
-                            </a>
-                        </li>
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                Styleguide
-                            </a>
-                        </li>
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                Documentation
-                            </a>
-                        </li>
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                Changelog
-                            </a>
-                        </li>
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                Documentation
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#!" class="text-reset">
-                                Changelog
-                            </a>
-                        </li>
-                    </ul>
-
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-
-                    <!-- Heading -->
-                    <h6 class="fw-bold text-uppercase text-gray-700">
-                        Legal
-                    </h6>
-
-                    <!-- List -->
-                    <ul class="list-unstyled text-muted mb-0">
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                Documentation
-                            </a>
-                        </li>
-                        <li class="mb-3">
-                            <a href="#!" class="text-reset">
-                                Changelog
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#!" class="text-reset">
-                                Pagebuilder
-                            </a>
-                        </li>
-                    </ul>
-
-                </div>
-            </div> <!-- / .row -->
-        </div> <!-- / .container -->
+    <footer class="py-8 bg-black">
+        <a href="{{ path('app_login') }}">
+         <img src="{{ asset('img/logo.png') }}" width="100px" alt="Logo" class="rounded mx-auto d-block">
+        </a>
     </footer>
+
 {% endblock %}

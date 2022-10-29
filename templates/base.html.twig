@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}SwapAccess{% endblock %}</title>
         <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}" />
-        <link href="{{ asset('css/base.css') }}" rel="stylesheet"/>
-
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -14,6 +12,7 @@
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
+            <script></script>
         {% endblock %}
     </head>
     <body>

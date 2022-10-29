@@ -30,6 +30,15 @@ class PartnerController extends AbstractController implements DisplayUserInterfa
 
         $partnerName = $partner->getName();
         $partnerStructures = $partner->getStructures();
+        $structureModules = null;
+
+        foreach ($partnerStructures as $structure) {
+            if (!(is_null($structure->getUser()))) {
+               if(!(is_null($structure->getUser()->getModules()))) {
+                   $structureModules = $structure->getUser()->getModules();
+               }
+            }
+        }
 
         if ($user->isEnabled() === false) {
             throw $this->createAccessDeniedException('Votre compte est désactivé, veuillez contacter un administrateur afin qu\'il active votre compte.');
@@ -40,6 +49,7 @@ class PartnerController extends AbstractController implements DisplayUserInterfa
             'userEmail' => $userEmail,
             'partnerName' => $partnerName,
             'partnerStructures' => $partnerStructures,
+            'structureModules' => $structureModules
         ]);
     }
 }
