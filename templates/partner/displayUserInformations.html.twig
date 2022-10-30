@@ -37,11 +37,11 @@
                                     <div class="dropdown-body">
                                         <div class="row gx-0">
                                                 <!-- Modules -->
-                                                <a class="dropdown-item text-center" href="#" id="modules-link">
+                                                <a class="dropdown-item text-center" href="#" id="modulesDropdownLink"  data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                                                     Modules
                                                 </a>
                                                 <!-- Structures -->
-                                                <a class="dropdown-item text-center" href="#" id="structures-link">
+                                                <a class="dropdown-item text-center" href="#" id="structuresDropdownlink" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                                                     Structures
                                                 </a>
 
@@ -61,15 +61,15 @@
         </div>
     </nav>
 
-    <header class="bg-black pt-13 pb-6">
+    <header class="bg-black pt-13 pb-5">
         <div class="container-md">
             <div class="row align-items-center">
                 <div class="col">
 
                     <!-- Heading -->
-                    <h2 class="fw-bold text-white mb-2 text-center text-lg-start pb-5">
+                    <h1 class="fw-bold text-white mb-2 text-center text-lg-start pb-5">
                         Vos informations personnelles :
-                    </h2>
+                    </h1>
                     <ul>
                         <li class="fs-lg text-white-75 mb-0 text-start pb-5">
                             Partenaire : {{ partnerName }}
@@ -84,32 +84,32 @@
     </header>
 
     <!-- MAIN -->
-    <main class="pb-8 mt-md-n6">
-        <div class="container-md">
+    <main class="pb-8 mt-md-n6 pt-8">
+        <div class="container-fluid">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-3 d-none d-lg-block">
 
                     <!-- Card -->
-                    <div class="card card-bleed border-bottom border-bottom-md-0 shadow-light-lg">
+                    <div class="card card-bleed border-bottom border-bottom-md-0 shadow-lg">
 
                         <!-- Collapse -->
                         <div class="collapse d-block" id="sidenavCollapse">
                             <div class="card-body">
 
                                 <!-- Heading -->
-                                <h6 class="fw-bolder text-uppercase mb-3 text-center">
+                                <h4 class="fw-bolder text-uppercase mb-3 text-center">
                                     VOTRE COMPTE
-                                </h6>
+                                </h4>
 
                                 <!-- List -->
                                 <ul class="card-list list text-gray-700 mb-6">
-                                    <li class="list-item active">
-                                        <a class="list-link text-reset" href="#" id="modules-link">
+                                    <li class="list-item active" id="module-link">
+                                        <a class="list-link text-reset" href="#" id="modulesCardLink">
                                             Modules
                                         </a>
                                     </li>
-                                    <li class="list-item">
-                                        <a class="list-link text-reset" href="#" id="'structure-link">
+                                    <li class="list-item structure-link" id="structures-link">
+                                        <a class="list-link text-reset" href="#" id="structuresCardlink">
                                             Structures
                                         </a>
                                     </li>
@@ -123,17 +123,17 @@
                 <div class="col-12 col-md-9">
 
                     <!-- Modules Card -->
-                    <div class="card card-bleed shadow-light-lg mb-6 " id="modules-card">
+                    <div class="card card-bleed shadow-lg mb-6 moduleCard" id="modules-card">
                         <div class="card-header">
 
                             <!-- Heading -->
-                            <h4 class="mb-0 fw-bolder text-center">
+                            <h2 class="mb-0 fw-bolder text-center">
                                VOS MODULES
-                            </h4>
+                            </h2>
                         </div>
 
                         {% for module in userModules %}
-                        <div class="card-body">
+                        <div class="card-body shadow-sm">
 
                             <div class="list-group-item">
                                 <div class="row align-items-center">
@@ -150,26 +150,37 @@
                     </div>
 
                     <!-- Structures Card -->
-                    <div class="card card-bleed shadow-light-lg mb-6" id="structure-card">
+                    <div class="card card-bleed shadow-light-lg mb-6 structureCard d-none" id="structure-card">
                         <div class="card-header">
 
                             <!-- Heading -->
-                            <h4 class="mb-0 fw-bolder text-center">
+                            <h2 class="mb-0 fw-bolder text-center">
                                 VOS STRUCTURES
-                            </h4>
+                            </h2>
                         </div>
 
                         {% for structure in partnerStructures %}
-                            <div class="card-body">
+                            <div class="card-body shadow-sm">
 
                                 <div class="list-group-item">
                                     <div class="row align-items-center">
                                         <div class="col">
-                                            <p class="mb-0">
+                                            <p class="mb-0 bg-light text-center">
+                                                <h4 class="fw-bolder">
                                                 {{ structure }}
+                                            </h4>
                                                 {%  if structure.user %}
                                                     {% if structure.user.modules %}
-                                                         {{ structure.user.modules }}
+                                            <p class="pt-2 text-center text-decoration-underline">
+
+                                            </p>
+                                               <ul>
+                                                {% for moduleStructure in structure.user.modules %}
+                                                   <li class="">
+                                                       {{ moduleStructure }}
+                                                   </li>
+                                                {% endfor %}
+                                                </ul>
                                                     {% endif %}
                                                 {% endif %}
                                             </p>
