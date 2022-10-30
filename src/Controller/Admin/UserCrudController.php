@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RoleType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -69,7 +70,7 @@ class UserCrudController extends AbstractCrudController
                     'error_bubbling'  => true,
                     'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 ]),
-            FormField::addPanel( 'Droits de l\'utilisateur' )->setIcon('fa-light fa-scale-balanced'),
+            FormField::addPanel( 'Droits de l\'utilisateur' )->setIcon('fa-solid fa-at'),
             ChoiceField::new( 'roles', 'Role')
                         ->setChoices([
                             'ADMINISTRATEUR' => 'ROLE_ADMIN',
@@ -77,18 +78,28 @@ class UserCrudController extends AbstractCrudController
                             'STRUCTURE' => 'ROLE_STRUCTURE'
                         ])
                         ->allowMultipleChoices(false)
-                        ->renderAsNativeWidget()
+                        ->renderExpanded()
                         ->setFormType(RoleType::class)
                         ->setRequired(true)
                         ,
-            BooleanField::new('enabled', 'Actif'),
+            BooleanField::new('enabled', 'Compte actif/inactif'),
 
-            FormField::addPanel( 'Accès de l\'utilisateur' )->setIcon('fa-light fa-scale-balanced'),
-            AssociationField::new('partner', 'Partenaire associé à l\'utilisateur'),
-            AssociationField::new('structure', 'Structure associé à l\'utilisateur'),
+            FormField::addPanel( 'Société associée' )->setIcon('fa-solid fa-universal-access'),
+            AssociationField::new('partner', 'Partenaire'),
+            AssociationField::new('structure', 'Structure'),
+
+            FormField::addPanel( 'Modules' )->setIcon('fa-solid fa-cube'),
             AssociationField::new('modules', 'Modules accessibles par l\'utilisateur')->setFormTypeOptions([
                 'by_reference' => false,
             ]),
         ];
+    }
+
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        $assets->addJsFile('build/app.js');
+
+        return parent::configureAssets($assets);
     }
 }

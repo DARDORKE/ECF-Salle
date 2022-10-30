@@ -37,7 +37,7 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setTitle(
-                '<img src="img/logo.png" alt="logo" width="50" height="50"> SWAP ACCESS'
+                '<img src="img/logoTitle.png" alt="logo" width="250">'
             )
             ->setFaviconPath('img/logo.png')
 
