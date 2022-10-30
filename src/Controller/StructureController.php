@@ -21,7 +21,6 @@ class StructureController extends AbstractController implements DisplayUserInter
         if ($user->isEnabled() === false) {
             throw $this->createAccessDeniedException('Votre compte est désactivé, veuillez contacter un administrateur afin qu\'il active votre compte.');
         }
-        $userModules = $user->getModules();
 
         //Structure Informations
         $structure = $user->getStructure();
@@ -34,14 +33,10 @@ class StructureController extends AbstractController implements DisplayUserInter
             throw $this->createNotFoundException('Votre structure n\'est liée à aucun partenaire, veuillez contacter un administrateur');
         }
 
-        $partnerEmail = $structurePartner->getUser()->getEmail();
-
         return $this->render('structure/displayUserInformations.html.twig' , [
             'user' => $user,
-            'userModules' => $userModules,
             'structurePartner' => $structurePartner,
             'structure' => $structure,
-            'partnerEmail' => $partnerEmail,
         ]);
     }
 }
