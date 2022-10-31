@@ -1,4 +1,5 @@
 controllers:
     resource: ../src/Controller/
     type: attribute
-    schemes: [ https ]
+    defaults:
+        schemes: [ https ]
