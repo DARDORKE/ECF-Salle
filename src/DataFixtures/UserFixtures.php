@@ -17,7 +17,7 @@ class UserFixtures extends Fixture
         $admin = new User();
         $admin->setEmail('admin@admin.com')
             ->setEnabled(true)
-            ->setPassword('admin')
+            ->setPassword('$2y$13$ldKzekrthpdEikkB.kS9Q.ddyOXbir.Qj7iaoIRA6lhiWmspgXyxu')
             ->setRoles(['ROLE_ADMIN'])
             ;
 
