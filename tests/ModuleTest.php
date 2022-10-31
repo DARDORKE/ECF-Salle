@@ -34,7 +34,7 @@ class ModuleTest extends TestCase
         $user = new Module();
 
         $this->assertEmpty($user->getName());
-        $this->assertEmpty($user->getUser());
+        $this->assertEmpty($user->getUsers());
 
     }
 }
