@@ -14,6 +14,14 @@ class UserFixtures extends Fixture
         $roles = ['STRUCTURE'=>'ROLE_STRUCTURE', 'PARTNER' => 'ROLE_PARTNER', 'ADMIN' => 'ROLE_ADMIN'];
         $enabled = ['1' => true, '2' => false];
 
+        $admin = new User();
+        $admin->setEmail('admin@admin.com')
+            ->setEnabled(true)
+            ->setPassword('admin')
+            ->setRoles('ROLE_ADMIN')
+            ;
+
+        $manager->persist($admin);
 
         for ($i = 0; $i < 50; $i++) {
             $user = new User();
